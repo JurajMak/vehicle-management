@@ -1,24 +1,33 @@
-import { useNavigate } from 'react-router-dom';
-import { Routes } from '../../routes';
+import React from 'react';
+import { observer } from 'mobx-react';
+import { MakeStore } from '../../store/makeStore';
+import { ModelStore } from '../../store/modelStore';
+import VehicleMakeCard from '../../components/card/vehicle-make-card';
+import VehicleModelCard from '../../components/card/vehicle-model-card';
 
-export default function Home() {
-  const navigate = useNavigate();
+const Home = observer(() => {
+  const getData = async () => {
+    await MakeStore.getVehicleMake();
+    await ModelStore.getVehicleMake();
+  };
 
-  const testID = ['1', '2', '3', '4'];
+  React.useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>
       <h1>HOME dasdasdasdasd d sadasdasd </h1>
-      <button type="button" onClick={() => navigate(`${Routes.CREATE}`)}>
-        CREATE
-      </button>
-      {testID.map(item => {
-        return (
-          <button key={item} type="button" onClick={() => navigate(`${Routes.EDIT}${item}`)}>
-            Edit
-          </button>
-        );
-      })}
+      <div style={{ display: 'flex', gap: '20px' }}>
+        {MakeStore?.makeData.map(make => {
+          return <VehicleMakeCard key={make.id} id={make.id} name={make.name} abrv={make.abrv} />;
+        })}
+        {ModelStore?.modelData.map(model => {
+          return <VehicleModelCard key={model.id} id={model.id} name={model.name} abrv={model.abrv} />;
+        })}
+      </div>
     </>
   );
-}
+});
+
+export default Home;

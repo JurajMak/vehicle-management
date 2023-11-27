@@ -1,11 +1,7 @@
 import Providers from './providers';
 
 function App() {
-  return (
-    <>
-      <Providers />
-    </>
-  );
+  return <Providers />;
 }
 
 export default App;
