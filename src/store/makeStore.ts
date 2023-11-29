@@ -1,23 +1,20 @@
 import { observable, runInAction, makeObservable } from 'mobx';
-import { VehicleMakeType } from '../types/database';
-import VehicleMakeService from '../services/vehicleMakeService';
-
+import { Vehicle } from '../services/vehicle';
+import { MakeType } from '../types/database';
 class VehicleMakeStore {
-  makeData: VehicleMakeType[] = [];
-  makeDataService: VehicleMakeService;
+  makeData: MakeType[] = [];
   constructor() {
-    this.makeDataService = new VehicleMakeService();
     makeObservable(this, {
       makeData: observable,
     });
   }
 
-  setMakeData = (apiData: VehicleMakeType[]) => {
+  setMakeData = (apiData: MakeType[]) => {
     this.makeData = apiData;
   };
-  getVehicleMake = async () => {
+  getMake = async () => {
     try {
-      const apiData = await this.makeDataService.getMake();
+      const apiData = await Vehicle.Make.get();
 
       runInAction(() => {
         this.setMakeData(apiData);

@@ -3,35 +3,42 @@ import Home from '../pages/home';
 import Edit from '../pages/edit';
 import Create from '../pages/create';
 import { Layout } from '../components/layout';
-export enum Routes {
+import ModelsList from '../pages/models';
+export enum ROUTES {
   HOME = '/',
-  EDIT = '/edit/:vehicle',
+  MODEL = '/:id',
+  EDIT_MODEL = '/edit/:id',
   CREATE = '/create',
   NOT_FOUND = '*',
 }
 
 export const router = createBrowserRouter([
   {
-    path: Routes.HOME,
+    path: ROUTES.HOME,
     element: <Layout />,
     children: [
       {
-        path: Routes.HOME,
+        path: ROUTES.HOME,
         element: <Home />,
       },
       {
-        path: Routes.EDIT,
-        element: <Edit />,
+        path: ROUTES.MODEL,
+        element: <ModelsList />,
       },
       {
-        path: Routes.CREATE,
+        path: ROUTES.EDIT_MODEL,
+        element: <Edit />,
+      },
+
+      {
+        path: ROUTES.CREATE,
         element: <Create />,
       },
     ],
   },
 
   {
-    path: Routes.NOT_FOUND,
-    element: <Navigate to={Routes.HOME} />,
+    path: ROUTES.NOT_FOUND,
+    element: <Navigate to={ROUTES.HOME} />,
   },
 ]);

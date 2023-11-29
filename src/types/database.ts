@@ -1,4 +1,4 @@
-export type VehicleModelType = {
+export type ModelType = {
   id: string | null;
   created_at: Date | null;
   name: string | null;
@@ -7,7 +7,7 @@ export type VehicleModelType = {
   image: string | null;
 };
 
-export type VehicleMakeType = {
+export type MakeType = {
   id: string | null;
   created_at: Date | null;
   name: string | null;

@@ -1,31 +1,47 @@
 import { observable, runInAction, makeObservable } from 'mobx';
-import { VehicleModelType } from '../types/database';
-import VehicleModelService from '../services/vehicleModelService';
+import { ModelType } from '../types/database';
+import { Vehicle } from '../services/vehicle';
 
 class VehicleModelStore {
-  modelData: VehicleModelType[] = [];
-  modelDataService: VehicleModelService;
+  modelsData: ModelType[] = [];
+  modelsId: string = '';
+  singleModelData: ModelType | null = null;
+  singleModelId: string = '';
   constructor() {
-    this.modelDataService = new VehicleModelService();
     makeObservable(this, {
-      modelData: observable,
+      modelsData: observable,
+      singleModelData: observable,
+      modelsId: observable,
     });
   }
 
-  setModelData = (apiData: VehicleModelType[]) => {
-    this.modelData = apiData;
-  };
+  setModelsData(apiData: ModelType[], id: string) {
+    this.modelsData = apiData;
+    this.modelsId = id;
+  }
 
-  getVehicleMake = async () => {
+  async getModels(id: string) {
     try {
-      const apiData = await this.modelDataService.getModel();
+      const apiData = await Vehicle.Model.get(id);
       runInAction(() => {
-        this.setModelData(apiData);
+        this.setModelsData(apiData, id);
       });
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+  setSingleModelData(apiData: ModelType, id: string) {
+    this.singleModelData = apiData;
+    this.singleModelId = id;
+    console.log(apiData, 'api');
+  }
+
+  async getSingleModel(id: string) {
+    const apiData = await Vehicle.Model.getSingle(id);
+    runInAction(() => {
+      this.setSingleModelData(apiData, id);
+    });
+  }
 }
 
 export const ModelStore = new VehicleModelStore();
