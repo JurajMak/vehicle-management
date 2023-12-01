@@ -1,5 +1,10 @@
 import { supabase } from '../../supabase';
-import type { MakeType } from '../../../types/database';
+import { MakeType } from '../../../store/MakeStore';
+
+interface UploadFileType {
+  file: File;
+  storageName: string;
+}
 
 export class Make {
   static makeEndpoint = 'vehicle_make';
@@ -11,5 +16,41 @@ export class Make {
       throw new Error(error.message);
     }
     return data;
+  };
+
+  static create = async (values: any): Promise<void> => {
+    const { error } = await supabase.from(this.makeEndpoint).insert(values);
+    if (error) {
+      throw new Error(error.message);
+    }
+  };
+  static edit = async (values: any): Promise<void> => {
+    const { error } = await supabase.from(this.makeEndpoint).update(values);
+    if (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  static getFileURL = async (key: string, storage: string = 'uploads') => {
+    const { data } = await supabase.storage.from(storage).getPublicUrl(key);
+    return data?.publicUrl;
+  };
+
+  static uploadFile = async ({ file, storageName }: UploadFileType) => {
+    const fileName = file.name.split('.');
+    const fileExt = fileName.pop();
+
+    const filePath = `${fileName.join('')}-${new Date().getTime()}.${fileExt}`;
+    const filePathWithoutSpaces = filePath.replace(/\s/g, '');
+
+    const { error } = await supabase.storage.from(storageName).upload(filePathWithoutSpaces, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type,
+    });
+
+    if (error) throw error;
+
+    return this.getFileURL(filePathWithoutSpaces, storageName);
   };
 }

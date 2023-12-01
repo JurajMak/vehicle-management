@@ -1,6 +1,15 @@
 import { observable, runInAction, makeObservable } from 'mobx';
-import { ModelType } from '../types/database';
-import { Vehicle } from '../services/vehicle';
+
+import { Vehicle } from '../services/Vehicle';
+
+export interface ModelType {
+  id: string;
+  created_at: Date;
+  name: string;
+  abrv: string;
+  make_id: string;
+  image: string | null;
+}
 
 class VehicleModelStore {
   modelsData: ModelType[] = [];

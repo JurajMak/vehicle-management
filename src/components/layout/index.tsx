@@ -1,11 +1,12 @@
 import { useDisclosure } from '@mantine/hooks';
-import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../routes';
+import { AppShell, Burger, Group } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
 
-export function Layout() {
+import NavTabs from '../Tabs';
+
+export const Layout: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
-  const navigate = useNavigate();
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -15,18 +16,15 @@ export function Layout() {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Group justify="space-between" style={{ flex: 1 }}>
-            <Group mx="auto" gap={20} visibleFrom="sm">
-              <UnstyledButton onClick={() => navigate(ROUTES.HOME)}>Home</UnstyledButton>
-              <UnstyledButton onClick={() => navigate(ROUTES.CREATE)}>Add Vehicle</UnstyledButton>
-            </Group>
+          <Group justify="center" style={{ flex: 1 }}>
+            <NavTabs />
           </Group>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar py="md" px={4}>
-        <UnstyledButton onClick={() => navigate(ROUTES.HOME)}>Home</UnstyledButton>
-        <UnstyledButton onClick={() => navigate(ROUTES.CREATE)}>Add Vehicle</UnstyledButton>
+        {/* <UnstyledButton onClick={() => navigate(ROUTES.HOME)}>Home</UnstyledButton>
+        <UnstyledButton onClick={() => navigate(ROUTES.CREATE)}>Add Vehicle</UnstyledButton> */}
       </AppShell.Navbar>
 
       <AppShell.Main>
@@ -34,4 +32,4 @@ export function Layout() {
       </AppShell.Main>
     </AppShell>
   );
-}
+};

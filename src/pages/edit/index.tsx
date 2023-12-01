@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelStore } from '../../store/modelStore';
+import { ModelStore } from '../../store/ModelStore';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
@@ -8,7 +8,7 @@ const Edit = observer(() => {
 
   React.useEffect(() => {
     ModelStore.getSingleModel(id);
-  }, []);
+  }, [id]);
 
   return (
     <div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { MakeStore } from '../../store/makeStore';
-import VehicleCard from '../../components/card/vehicle-card';
+import { MakeStore } from '../../store/MakeStore';
+import VehicleCard from '../../components/Card/VehicleCard';
 import { useNavigate } from 'react-router-dom';
-import { MakeType } from '../../types/database';
+import { Box, Container, Flex, Grid } from '@mantine/core';
 
 const Home = observer(() => {
   const navigate = useNavigate();
@@ -12,21 +12,24 @@ const Home = observer(() => {
   }, []);
 
   return (
-    <>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        {MakeStore?.makeData.map((make: MakeType) => {
+    <Box size="xl">
+      <Grid gutter="xl">
+        {MakeStore?.makeData.map(make => {
           return (
-            <VehicleCard
-              key={make.id}
-              id={make.id}
-              name={make.name}
-              abrv={make.abrv}
-              handleNavigation={() => navigate(`${make.id}`)}
-            />
+            <Grid.Col span={4}>
+              <VehicleCard
+                key={make.id}
+                id={make.id}
+                name={make.name}
+                abrv={make.abrv}
+                image={make.image}
+                handleNavigation={() => navigate(`${make.id}`)}
+              />
+            </Grid.Col>
           );
         })}
-      </div>
-    </>
+      </Grid>
+    </Box>
   );
 });
 
