@@ -1,9 +1,10 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/Home';
-import Edit from '../pages/Edit';
-import { CreateForm } from '../pages/Create';
-import { Layout } from '../components/Layout';
-import ModelsList from '../pages/Models';
+import Home from '../pages/home';
+import Edit from '../pages/edit';
+import { CreateForm } from '../pages/create';
+import Layout from '../components/Layout';
+
+import ModelsList from '../pages/models';
 export enum ROUTES {
   HOME = '/',
   MODEL = '/:id',

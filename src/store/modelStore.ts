@@ -1,6 +1,6 @@
 import { observable, runInAction, makeObservable } from 'mobx';
 
-import { Vehicle } from '../services/Vehicle';
+import { Vehicle } from '../services/vehicle';
 
 export interface ModelType {
   id: string;
@@ -53,4 +53,4 @@ class VehicleModelStore {
   }
 }
 
-export const ModelStore = new VehicleModelStore();
+export const modelStore = new VehicleModelStore();

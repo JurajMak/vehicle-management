@@ -1,5 +1,5 @@
 import { observable, runInAction, makeObservable } from 'mobx';
-import { Vehicle } from '../services/Vehicle';
+import { Vehicle } from '../services/vehicle';
 
 export interface MakeType {
   id: string;
@@ -37,4 +37,4 @@ class VehicleMakeStore {
   };
 }
 
-export const MakeStore = new VehicleMakeStore();
+export const makeStore = new VehicleMakeStore();
