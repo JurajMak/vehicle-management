@@ -1,14 +1,16 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/Home';
-import Edit from '../pages/Edit';
-import { CreateForm } from '../pages/Create';
+import { EditForm } from '../pages/EditModel';
+import { CreateForm } from '../pages/CreateMake';
 
 import ModelsList from '../pages/Models';
 import { Layout } from '../components/Layout';
+import Brand from '../pages/EditMake';
 export enum ROUTES {
   HOME = '/',
-  MODEL = '/:id',
-  EDIT_MODEL = '/edit/:id',
+  MODEL = '/models/:id',
+  EDIT_BRAND = '/brand/:id',
+  EDIT_MODEL = '/models/:id/model/:id',
   CREATE = '/create',
   NOT_FOUND = '*',
 }
@@ -19,7 +21,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: ROUTES.HOME,
+        index: true,
         element: <Home />,
       },
       {
@@ -28,7 +30,11 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.EDIT_MODEL,
-        element: <Edit />,
+        element: <EditForm />,
+      },
+      {
+        path: ROUTES.EDIT_BRAND,
+        element: <Brand />,
       },
 
       {

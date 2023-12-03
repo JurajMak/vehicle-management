@@ -11,7 +11,8 @@ export interface MakeType {
 
 class VehicleMakeStore {
   makeData: MakeType[] = [];
-  autocompleteData: MakeType[] = [];
+  singleMakeData: MakeType | null = null;
+  singleMakeId: string = '';
   constructor() {
     makeObservable(this, {
       makeData: observable,
@@ -21,9 +22,7 @@ class VehicleMakeStore {
   setMakeData = (apiData: MakeType[]) => {
     this.makeData = apiData;
   };
-  setAutocompleteData = (apiData: MakeType[]) => {
-    this.autocompleteData = apiData;
-  };
+
   getMake = async () => {
     try {
       const apiData = await Vehicle.Make.get();
@@ -35,6 +34,17 @@ class VehicleMakeStore {
       console.error(error);
     }
   };
+  setSignleMakeData(apiData: MakeType, id: string) {
+    this.singleMakeData = apiData;
+    this.singleMakeId = id;
+  }
+
+  async getSingleMake(id: string) {
+    const apiData = await Vehicle.Make.getSingle(id);
+    runInAction(() => {
+      this.setSignleMakeData(apiData, id);
+    });
+  }
 }
 
 export const makeStore = new VehicleMakeStore();

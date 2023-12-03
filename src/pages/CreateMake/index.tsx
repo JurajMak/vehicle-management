@@ -1,4 +1,4 @@
-import { TextInput, Paper, Title, Container, Button, Grid, Image, ActionIcon, Box } from '@mantine/core';
+import { TextInput, Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { createForm } from './Form';
@@ -52,19 +52,20 @@ export const Create = observer(({ form }: any) => {
             </Grid.Col>
 
             <Grid.Col>
+              <Text>Add image</Text>
               <Paper withBorder mah="20rem" maw="50rem" pos="relative">
-                <ActionIcon onClick={() => removePreview()} radius="xl" pos="absolute" variant="subtle" right={0}>
-                  X
-                </ActionIcon>
+                <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
                 <Image src={imgPreview} alt="image" />
               </Paper>
-              <Box mt="xl">
-                <FileButton variant="filled" text="Upload Image" onChange={(e: any) => handlePreview(e)} />
+            </Grid.Col>
+            <Grid.Col offset={8}>
+              <Box>
+                <FileButton variant="outline" text="Upload Image" onChange={(e: any) => handlePreview(e)} />
               </Box>
             </Grid.Col>
 
-            <Grid.Col offset={8}>
-              <Button variant="outline" type="submit" mt="xl">
+            <Grid.Col>
+              <Button variant="filled" type="submit" mt="xl">
                 Submit
               </Button>
             </Grid.Col>

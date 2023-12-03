@@ -18,8 +18,17 @@ export class Make {
     return data;
   };
 
+  static getSingle = async (id: string): Promise<MakeType> => {
+    let query = supabase.from(this.makeEndpoint).select('*').eq('id', id).single();
+    const { data, error } = await query;
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data;
+  };
+
   static create = async (values: any): Promise<void> => {
-    const { error } = await supabase.from(this.makeEndpoint).insert(values);
+    const { error } = await supabase.from(this.makeEndpoint).insert(values).eq('id', values.id);
     if (error) {
       throw new Error(error.message);
     }
@@ -31,12 +40,12 @@ export class Make {
     }
   };
 
-  static getFileURL = async (key: string, storage: string = 'uploads') => {
-    const { data } = await supabase.storage.from(storage).getPublicUrl(key);
+  static getFileURL = async (key: string, storage: string = 'uploads'): Promise<string> => {
+    const { data } = supabase.storage.from(storage).getPublicUrl(key);
     return data?.publicUrl;
   };
 
-  static uploadFile = async ({ file, storageName }: UploadFileType) => {
+  static uploadFile = async ({ file, storageName }: UploadFileType): Promise<string> => {
     const fileName = file.name.split('.');
     const fileExt = fileName.pop();
 

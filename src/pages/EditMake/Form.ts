@@ -26,6 +26,13 @@ class EditForm extends MobxReactForm {
           rules: 'required|string|between:1,25',
           value: '',
         },
+        {
+          name: 'image',
+          label: 'Add Brand Image',
+          placeholder: 'Insert abbreviation for vehicle brand',
+          rules: '',
+          value: '',
+        },
       ],
     };
   }
@@ -33,7 +40,7 @@ class EditForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: any) => {
-        await Vehicle.Make.create(form.values());
+        // await Vehicle.Make.create(form.values());
         console.log('Values:', form.values());
         form.reset();
       },

@@ -8,7 +8,7 @@ export interface ModelType {
   name: string;
   abrv: string;
   make_id: string;
-  image: string | null;
+  image: string;
 }
 
 class VehicleModelStore {

@@ -43,7 +43,7 @@ class CreateForm extends MobxReactForm {
         const { name, abrv, image } = form.values();
         const url = await Vehicle.Make.uploadFile({
           file: image,
-          storageName: `uploads`,
+          storageName: `uploads/${name}`,
         });
         const data = {
           name: name,
@@ -51,8 +51,7 @@ class CreateForm extends MobxReactForm {
           image: url,
         };
         await Vehicle.Make.create(data);
-        console.log(url, 'url');
-        console.log(data, 'data');
+
         form.reset();
       },
       onError(form: any) {

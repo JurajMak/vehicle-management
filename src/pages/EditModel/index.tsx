@@ -1,0 +1,87 @@
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { observer } from 'mobx-react';
+import { Box, Button, CloseButton, Container, Grid, Image, Paper, TextInput, Title } from '@mantine/core';
+import FileButton from '../../components/FileButton';
+import { editForm } from './Form';
+
+const Edit = observer(({ form }: any) => {
+  const [file, setFile] = React.useState<File | null>(null);
+
+  const convert = file && URL.createObjectURL(file);
+  const { state } = useLocation();
+
+  const handlePreview: React.ChangeEventHandler<HTMLInputElement> = e => {
+    if (!e.target.files) {
+      return;
+    }
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    form.$('image').set(selectedFile);
+  };
+
+  const removePreview = () => {
+    form.$('image').set('');
+    setFile(null);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    form.submit();
+    if (!form.errors()) {
+      setFile(null);
+    }
+  };
+
+  React.useEffect(() => {
+    if (state) {
+      form.$('name').set(`${state.name}`);
+      form.$('abrv').set(`${state.name}`);
+      form.$('id').set(`${state.id}`);
+    }
+  }, [state.make_id]);
+
+  return (
+    <Container size="xs" my={20}>
+      <Title ta="center" c="primary">
+        Edit {state.name}
+      </Title>
+
+      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <form onSubmit={handleSubmit}>
+          <Grid gutter="xl">
+            <Grid.Col>
+              <TextInput {...form.$('name').bind()} />
+            </Grid.Col>
+
+            <Grid.Col>
+              <TextInput {...form.$('abrv').bind()} />
+            </Grid.Col>
+
+            <Grid.Col>
+              <Paper withBorder mah="20rem" maw="50rem" pos="relative">
+                <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
+                <Image src={state.image ?? convert} alt="image" />
+              </Paper>
+            </Grid.Col>
+            <Grid.Col offset={8}>
+              <Box>
+                <FileButton variant="outline" text="Upload Image" onChange={(e: any) => handlePreview(e)} />
+              </Box>
+            </Grid.Col>
+
+            <Grid.Col>
+              <Button variant="filled" type="submit" mt="xl">
+                Submit
+              </Button>
+            </Grid.Col>
+          </Grid>
+        </form>
+      </Paper>
+    </Container>
+  );
+});
+
+export default Edit;
+
+export const EditForm = () => <Edit form={editForm} />;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { makeStore } from '../../store/MakeStore';
+import { MakeType, makeStore } from '../../store/MakeStore';
 
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, Flex, Grid } from '@mantine/core';
+import { Box, Container, Grid } from '@mantine/core';
 import VehicleCard from '../../components/Cards/VehicleCard';
 
 const Home = observer(() => {
@@ -12,24 +12,30 @@ const Home = observer(() => {
     makeStore.getMake();
   }, []);
 
+  const handleNavigateEdit = (item: MakeType) => {
+    navigate(`brand/${item.id}`, { state: item });
+  };
   return (
     <Box size="xl">
-      <Grid gutter="xl">
-        {makeStore?.makeData.map(make => {
-          return (
-            <Grid.Col span={4}>
-              <VehicleCard
-                key={make.id}
-                id={make.id}
-                name={make.name}
-                abrv={make.abrv}
-                image={make.image}
-                handleNavigation={() => navigate(`${make.id}`)}
-              />
-            </Grid.Col>
-          );
-        })}
-      </Grid>
+      <Container size="xl">
+        <Grid gutter="xl">
+          {makeStore.makeData.map(item => {
+            return (
+              <Grid.Col span={{ base: 12, sm: 6, md: 3, lg: 4 }} key={item.id}>
+                <VehicleCard
+                  id={item.id}
+                  name={item.name}
+                  abrv={item.abrv}
+                  image={item.image}
+                  editBtnText="Edit Brand"
+                  handleNavigation={() => navigate(`models/${item.id}`)}
+                  navigateToEdit={() => handleNavigateEdit({ ...item })}
+                />
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+      </Container>
     </Box>
   );
 });
