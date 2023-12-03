@@ -1,5 +1,5 @@
 import { observable, runInAction, makeObservable } from 'mobx';
-import { Vehicle } from '../services/vehicle';
+import { Vehicle } from '../services/Vehicle';
 
 export interface MakeType {
   id: string;
