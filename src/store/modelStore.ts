@@ -12,43 +12,53 @@ export interface ModelType {
 }
 
 class VehicleModelStore {
-  modelsData: ModelType[] = [];
-  modelsId: string = '';
-  singleModelData: ModelType | null = null;
+  models: ModelType[] = [];
+  modelId: string = '';
+  singleModel: ModelType | null = null;
   singleModelId: string = '';
+  isLoading: boolean = true;
   constructor() {
     makeObservable(this, {
-      modelsData: observable,
-      singleModelData: observable,
-      modelsId: observable,
+      models: observable,
+      singleModel: observable,
+      modelId: observable,
+      singleModelId: observable,
     });
   }
 
-  setModelsData(apiData: ModelType[], id: string) {
-    this.modelsData = apiData;
-    this.modelsId = id;
+  setModel(apiData: ModelType[], id: string) {
+    this.models = apiData;
+    this.modelId = id;
+  }
+  setLoading(condition: boolean) {
+    this.isLoading = condition;
   }
 
   async getModels(id: string) {
-    try {
+    if (this.modelId !== id) {
       const apiData = await Vehicle.Model.get(id);
       runInAction(() => {
-        this.setModelsData(apiData, id);
+        this.setModel(apiData, id);
       });
-    } catch (error) {
-      console.error(error);
     }
   }
-  setSingleModelData(apiData: ModelType, id: string) {
-    this.singleModelData = apiData;
+  setSingleModel(apiData: ModelType, id: string) {
+    this.singleModel = apiData;
     this.singleModelId = id;
-    console.log(apiData, 'api');
   }
 
   async getSingleModel(id: string) {
-    const apiData = await Vehicle.Model.getSingle(id);
+    if (this.singleModelId !== id) {
+      const apiData = await Vehicle.Model.getSingle(id);
+      runInAction(() => {
+        this.setSingleModel(apiData, id);
+      });
+    }
+  }
+  async deleteModel(id: string) {
+    await Vehicle.Model.delete(id);
     runInAction(() => {
-      this.setSingleModelData(apiData, id);
+      this.models = this.models.filter(item => item.id !== id);
     });
   }
 }

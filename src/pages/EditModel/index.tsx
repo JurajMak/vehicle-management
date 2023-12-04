@@ -1,15 +1,17 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Box, Button, CloseButton, Container, Grid, Image, Paper, TextInput, Title } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
+import { makeStore } from '../../store/MakeStore';
+import { modelStore } from '../../store/ModelStore';
 
 const Edit = observer(({ form }: any) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   const convert = file && URL.createObjectURL(file);
-  const { state } = useLocation();
+  const { id }: any = useParams();
 
   const handlePreview: React.ChangeEventHandler<HTMLInputElement> = e => {
     if (!e.target.files) {
@@ -28,23 +30,25 @@ const Edit = observer(({ form }: any) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
-    if (!form.errors()) {
-      setFile(null);
+  };
+
+  const handleState = () => {
+    modelStore.getSingleModel(id);
+    if (modelStore.singleModel) {
+      form.$('name').set(`${modelStore.singleModel.name}`);
+      form.$('abrv').set(`${modelStore.singleModel.abrv}`);
+      makeStore.getSingleMake(modelStore.singleModel.make_id);
     }
   };
 
   React.useEffect(() => {
-    if (state) {
-      form.$('name').set(`${state.name}`);
-      form.$('abrv').set(`${state.name}`);
-      form.$('id').set(`${state.id}`);
-    }
-  }, [state.make_id]);
+    handleState();
+  }, [modelStore.singleModel?.make_id]);
 
   return (
     <Container size="xs" my={20}>
       <Title ta="center" c="primary">
-        Edit {state.name}
+        Edit {makeStore.singleMake?.name} {modelStore.singleModel?.name}
       </Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -61,7 +65,7 @@ const Edit = observer(({ form }: any) => {
             <Grid.Col>
               <Paper withBorder mah="20rem" maw="50rem" pos="relative">
                 <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                <Image src={state.image ?? convert} alt="image" />
+                <Image src={modelStore.singleModel?.image ?? convert} alt="image" />
               </Paper>
             </Grid.Col>
             <Grid.Col offset={8}>
@@ -82,6 +86,4 @@ const Edit = observer(({ form }: any) => {
   );
 });
 
-export default Edit;
-
-export const EditForm = () => <Edit form={editForm} />;
+export const EditModel = () => <Edit form={editForm} />;

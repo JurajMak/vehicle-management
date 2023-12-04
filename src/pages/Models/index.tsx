@@ -12,16 +12,17 @@ const ModelsList = observer(() => {
 
   React.useEffect(() => {
     modelStore.getModels(id);
-  }, [id]);
+  }, []);
+
   const handleNavigateEdit = (item: ModelType) => {
-    navigate(`/models/${id}/model/${item.id}`, { state: item });
+    navigate(`/model/${item.id}`, { state: item });
   };
 
   return (
     <Box size="xl">
       <Container size="xl">
         <Grid gutter="xl">
-          {modelStore.modelsData?.map(item => {
+          {modelStore.models?.map(item => {
             return (
               <Grid.Col span={{ base: 12, sm: 6, md: 3, lg: 4 }} key={item.id}>
                 <VehicleCard
@@ -31,6 +32,7 @@ const ModelsList = observer(() => {
                   image={item.image}
                   editBtnText="Edit Model"
                   navigateToEdit={() => handleNavigateEdit({ ...item })}
+                  deleteModel={() => modelStore.deleteModel(item.id)}
                 />
               </Grid.Col>
             );
@@ -38,7 +40,6 @@ const ModelsList = observer(() => {
         </Grid>
       </Container>
     </Box>
-    // <VehicleList store={modelStore.modelsData} />
   );
 });
 

@@ -1,4 +1,4 @@
-import { observable, runInAction, makeObservable } from 'mobx';
+import { observable, runInAction, makeObservable, action } from 'mobx';
 import { Vehicle } from '../services/Vehicle';
 
 export interface MakeType {
@@ -10,39 +10,47 @@ export interface MakeType {
 }
 
 class VehicleMakeStore {
-  makeData: MakeType[] = [];
-  singleMakeData: MakeType | null = null;
+  make: MakeType[] = [];
+  singleMake: MakeType | null = null;
   singleMakeId: string = '';
   constructor() {
     makeObservable(this, {
-      makeData: observable,
+      make: observable,
+      singleMake: observable,
+      singleMakeId: observable,
+      setMakeData: action,
     });
   }
 
   setMakeData = (apiData: MakeType[]) => {
-    this.makeData = apiData;
+    this.make = apiData;
   };
 
-  getMake = async () => {
-    try {
+  async getMake() {
+    if (this.make.length === 0) {
       const apiData = await Vehicle.Make.get();
-
       runInAction(() => {
         this.setMakeData(apiData);
       });
-    } catch (error) {
-      console.error(error);
     }
-  };
-  setSignleMakeData(apiData: MakeType, id: string) {
-    this.singleMakeData = apiData;
+  }
+  setSingleMake(apiData: MakeType, id: string) {
+    this.singleMake = apiData;
     this.singleMakeId = id;
   }
 
   async getSingleMake(id: string) {
-    const apiData = await Vehicle.Make.getSingle(id);
+    if (this.singleMakeId !== id) {
+      const apiData = await Vehicle.Make.getSingle(id);
+      runInAction(() => {
+        this.setSingleMake(apiData, id);
+      });
+    }
+  }
+  async deleteMake(id: string) {
+    await Vehicle.Make.delete(id);
     runInAction(() => {
-      this.setSignleMakeData(apiData, id);
+      this.make = this.make.filter(item => item.id !== id);
     });
   }
 }

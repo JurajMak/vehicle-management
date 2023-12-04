@@ -19,7 +19,7 @@ const Home = observer(() => {
     <Box size="xl">
       <Container size="xl">
         <Grid gutter="xl">
-          {makeStore.makeData.map(item => {
+          {makeStore.make.map(item => {
             return (
               <Grid.Col span={{ base: 12, sm: 6, md: 3, lg: 4 }} key={item.id}>
                 <VehicleCard
@@ -30,6 +30,7 @@ const Home = observer(() => {
                   editBtnText="Edit Brand"
                   handleNavigation={() => navigate(`models/${item.id}`)}
                   navigateToEdit={() => handleNavigateEdit({ ...item })}
+                  deleteModel={() => makeStore.deleteMake(item.id)}
                 />
               </Grid.Col>
             );

@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { createForm } from './Form';
 import placeholderImg from '../../assets/images/placeholder.png';
 import FileButton from '../../components/FileButton';
+import { makeStore } from '../../store/MakeStore';
 
 export const Create = observer(({ form }: any) => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -29,9 +30,8 @@ export const Create = observer(({ form }: any) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
-    if (!form.errors()) {
-      setFile(null);
-    }
+    setFile(null);
+    makeStore.setMakeData([]);
   };
 
   return (

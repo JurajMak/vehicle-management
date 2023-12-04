@@ -36,6 +36,15 @@ export class Model {
       throw new Error(error.message);
     }
   };
+
+  static delete = async (id: string): Promise<void> => {
+    const { error } = await supabase.from(this.modelEndpoint).delete().eq('id', id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  };
+
   static getFileURL = async (key: string, storage: string = 'uploads'): Promise<string> => {
     const { data } = supabase.storage.from(storage).getPublicUrl(key);
     return data?.publicUrl;
