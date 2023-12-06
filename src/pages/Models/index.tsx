@@ -3,11 +3,11 @@ import { ModelType, modelStore } from '../../store/ModelStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import VehicleCard from '../../components/Cards/VehicleCard';
-
 import { Box, Container, Grid } from '@mantine/core';
+import { FixMeLater } from '../../types';
 
 const ModelsList = observer(() => {
-  const { id }: any = useParams();
+  const { id }: FixMeLater = useParams();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -32,7 +32,7 @@ const ModelsList = observer(() => {
                   image={item.image}
                   editBtnText="Edit Model"
                   navigateToEdit={() => handleNavigateEdit({ ...item })}
-                  deleteModel={() => modelStore.deleteModel(item.id)}
+                  deleteVehicle={() => modelStore.deleteModel(item.id)}
                 />
               </Grid.Col>
             );

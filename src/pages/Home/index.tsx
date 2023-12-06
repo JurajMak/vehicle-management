@@ -30,7 +30,7 @@ const Home = observer(() => {
                   editBtnText="Edit Brand"
                   handleNavigation={() => navigate(`models/${item.id}`)}
                   navigateToEdit={() => handleNavigateEdit({ ...item })}
-                  deleteModel={() => makeStore.deleteMake(item.id)}
+                  deleteVehicle={() => makeStore.deleteMake(item.id)}
                 />
               </Grid.Col>
             );

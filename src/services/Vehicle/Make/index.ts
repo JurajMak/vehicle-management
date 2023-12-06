@@ -1,5 +1,6 @@
 import { supabase } from '../../Supabase';
 import { MakeType } from '../../../store/MakeStore';
+import { FixMeLater } from '../../../types';
 
 interface UploadFileType {
   file: File;
@@ -27,13 +28,13 @@ export class Make {
     return data;
   };
 
-  static create = async (values: any): Promise<void> => {
+  static create = async (values: FixMeLater): Promise<void> => {
     const { error } = await supabase.from(this.makeEndpoint).insert(values).eq('id', values.id);
     if (error) {
       throw new Error(error.message);
     }
   };
-  static edit = async (values: any): Promise<void> => {
+  static edit = async (values: FixMeLater): Promise<void> => {
     const { error } = await supabase.from(this.makeEndpoint).update(values);
     if (error) {
       throw new Error(error.message);

@@ -13,18 +13,24 @@ class VehicleMakeStore {
   make: MakeType[] = [];
   singleMake: MakeType | null = null;
   singleMakeId: string = '';
+  isLoading: boolean = false;
   constructor() {
     makeObservable(this, {
       make: observable,
       singleMake: observable,
       singleMakeId: observable,
+      isLoading: observable,
       setMakeData: action,
+      setLoading: action,
     });
   }
 
   setMakeData = (apiData: MakeType[]) => {
     this.make = apiData;
   };
+  setLoading(condition: boolean) {
+    this.isLoading = condition;
+  }
 
   async getMake() {
     if (this.make.length === 0) {
@@ -34,6 +40,7 @@ class VehicleMakeStore {
       });
     }
   }
+
   setSingleMake(apiData: MakeType, id: string) {
     this.singleMake = apiData;
     this.singleMakeId = id;

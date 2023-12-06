@@ -3,6 +3,7 @@ import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { makeStore } from '../../store/MakeStore';
+import { FixMeLater } from '../../types';
 
 class EditForm extends MobxReactForm {
   plugins() {
@@ -40,7 +41,7 @@ class EditForm extends MobxReactForm {
 
   hooks() {
     return {
-      onSuccess: async (form: any) => {
+      onSuccess: async (form: FixMeLater) => {
         const { name, abrv, image } = form.values();
         const url = await Vehicle.Make.uploadFile({
           file: image,
@@ -52,10 +53,10 @@ class EditForm extends MobxReactForm {
           image: url,
           id: makeStore.singleMakeId,
         };
-        await Vehicle.Model.edit(data);
+        await Vehicle.Make.edit(data);
       },
-      onError(form: any) {
-        console.log(form.errors());
+      onError(form: FixMeLater) {
+        // console.log(form.errors());
       },
     };
   }

@@ -5,8 +5,9 @@ import { createForm } from './Form';
 import placeholderImg from '../../assets/images/placeholder.png';
 import FileButton from '../../components/FileButton';
 import { makeStore } from '../../store/MakeStore';
+import { FixMeLater } from '../../types';
 
-export const Create = observer(({ form }: any) => {
+export const Create = observer(({ form }: FixMeLater) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   const convert = file && URL.createObjectURL(file);
@@ -60,7 +61,7 @@ export const Create = observer(({ form }: any) => {
             </Grid.Col>
             <Grid.Col offset={8}>
               <Box>
-                <FileButton variant="outline" text="Upload Image" onChange={(e: any) => handlePreview(e)} />
+                <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
               </Box>
             </Grid.Col>
 
@@ -76,4 +77,4 @@ export const Create = observer(({ form }: any) => {
   );
 });
 
-export const CreateForm = () => <Create form={createForm} />;
+export const CreateMake = () => <Create form={createForm} />;

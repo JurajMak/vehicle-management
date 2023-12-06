@@ -6,12 +6,13 @@ import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
 import { makeStore } from '../../store/MakeStore';
 import { modelStore } from '../../store/ModelStore';
+import { FixMeLater } from '../../types';
 
-const Edit = observer(({ form }: any) => {
+const Edit = observer(({ form }: FixMeLater) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   const convert = file && URL.createObjectURL(file);
-  const { id }: any = useParams();
+  const { id }: FixMeLater = useParams();
 
   const handlePreview: React.ChangeEventHandler<HTMLInputElement> = e => {
     if (!e.target.files) {
@@ -70,7 +71,7 @@ const Edit = observer(({ form }: any) => {
             </Grid.Col>
             <Grid.Col offset={8}>
               <Box>
-                <FileButton variant="outline" text="Upload Image" onChange={(e: any) => handlePreview(e)} />
+                <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
               </Box>
             </Grid.Col>
 

@@ -1,4 +1,4 @@
-import { observable, runInAction, makeObservable } from 'mobx';
+import { observable, runInAction, makeObservable, action } from 'mobx';
 
 import { Vehicle } from '../services/Vehicle';
 
@@ -13,7 +13,7 @@ export interface ModelType {
 
 class VehicleModelStore {
   models: ModelType[] = [];
-  modelId: string = '';
+  make_id: string = '';
   singleModel: ModelType | null = null;
   singleModelId: string = '';
   isLoading: boolean = true;
@@ -21,21 +21,22 @@ class VehicleModelStore {
     makeObservable(this, {
       models: observable,
       singleModel: observable,
-      modelId: observable,
+      make_id: observable,
       singleModelId: observable,
+      setLoading: action,
     });
   }
 
   setModel(apiData: ModelType[], id: string) {
     this.models = apiData;
-    this.modelId = id;
+    this.make_id = id;
   }
   setLoading(condition: boolean) {
     this.isLoading = condition;
   }
 
   async getModels(id: string) {
-    if (this.modelId !== id) {
+    if (this.make_id !== id || this.models.length === 0) {
       const apiData = await Vehicle.Model.get(id);
       runInAction(() => {
         this.setModel(apiData, id);

@@ -1,4 +1,5 @@
 import { ModelType } from '../../../store/ModelStore';
+import { FixMeLater } from '../../../types';
 import { supabase } from '../../Supabase';
 interface UploadFileType {
   file: File;
@@ -24,13 +25,13 @@ export class Model {
     return data;
   };
 
-  static create = async (values: any): Promise<void> => {
+  static create = async (values: FixMeLater): Promise<void> => {
     const { error } = await supabase.from(this.modelEndpoint).insert(values);
     if (error) {
       throw new Error(error.message);
     }
   };
-  static edit = async (values: any): Promise<void> => {
+  static edit = async (values: FixMeLater): Promise<void> => {
     const { error } = await supabase.from(this.modelEndpoint).update(values).eq('id', values.id);
     if (error) {
       throw new Error(error.message);

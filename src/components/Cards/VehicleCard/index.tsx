@@ -9,7 +9,7 @@ interface OwnProps {
   editBtnText?: string;
   handleNavigation?: () => void;
   navigateToEdit?: () => void;
-  deleteModel?: () => void;
+  deleteVehicle?: () => void;
 }
 const VehicleCard: React.FC<OwnProps> = ({
   name,
@@ -18,7 +18,7 @@ const VehicleCard: React.FC<OwnProps> = ({
   editBtnText,
   handleNavigation,
   navigateToEdit,
-  deleteModel,
+  deleteVehicle,
 }) => {
   const { id } = useParams();
 
@@ -37,18 +37,18 @@ const VehicleCard: React.FC<OwnProps> = ({
       </Stack>
       <Group justify="space-between">
         {!id && <Button onClick={handleNavigation}>View Models</Button>}
-        {!id && (
-          <ActionIcon pos="absolute" top={10} right={10} bg="red.7" onClick={deleteModel}>
-            X
-          </ActionIcon>
-        )}
-        {id && (
-          <ActionIcon pos="absolute" top={10} right={10} bg="red.7" onClick={deleteModel}>
-            X
-          </ActionIcon>
-        )}
 
         <Button onClick={navigateToEdit}>{editBtnText}</Button>
+        {!id && (
+          <Button bg="red.7" onClick={deleteVehicle}>
+            Delete Brand
+          </Button>
+        )}
+        {id && (
+          <Button bg="red.7" onClick={deleteVehicle}>
+            Delete Model
+          </Button>
+        )}
       </Group>
     </Card>
   );
