@@ -3,7 +3,8 @@ import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { FixMeLater } from '../../types';
-
+import { makeStore } from '../../store/MakeStore';
+import { notifications } from '@mantine/notifications';
 class CreateForm extends MobxReactForm {
   plugins() {
     return {
@@ -23,7 +24,14 @@ class CreateForm extends MobxReactForm {
         {
           name: 'abrv',
           label: 'Abbreviation',
-          placeholder: 'Insert abbreviation for vehicle brand',
+          placeholder: 'Insert abbreviation ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'country',
+          label: 'Country',
+          placeholder: 'Insert country of origin ',
           rules: 'required|string|between:1,25',
           value: '',
         },
@@ -31,7 +39,7 @@ class CreateForm extends MobxReactForm {
           name: 'image',
           label: 'Add Brand Image',
           placeholder: 'Insert abbreviation for vehicle brand',
-          rules: '',
+          rules: 'required',
           value: '',
         },
       ],
@@ -41,7 +49,7 @@ class CreateForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: FixMeLater) => {
-        const { name, abrv, image } = form.values();
+        const { name, abrv, image, country } = form.values();
         const url = await Vehicle.Make.uploadFile({
           file: image,
           storageName: `uploads/${name}`,
@@ -49,10 +57,11 @@ class CreateForm extends MobxReactForm {
         const data = {
           name: name,
           abrv: abrv,
+          country: country,
           image: url,
         };
         await Vehicle.Make.create(data);
-
+        makeStore.cache.clear();
         form.reset();
       },
       onError(form: FixMeLater) {

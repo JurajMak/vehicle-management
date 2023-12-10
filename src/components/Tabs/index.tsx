@@ -13,7 +13,7 @@ const NavTabs = () => {
   };
 
   return (
-    <Tabs defaultValue={pathname} onChange={handleTabChange}>
+    <Tabs value={pathname} onChange={handleTabChange}>
       <Tabs.List justify="center">
         <Tabs.Tab value={ROUTES.HOME}>Home</Tabs.Tab>
         <Tabs.Tab value={ROUTES.CREATE}>Add new Brand</Tabs.Tab>

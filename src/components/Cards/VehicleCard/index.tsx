@@ -1,55 +1,52 @@
-import { ActionIcon, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
-import { useLocation, useParams } from 'react-router-dom';
+import { Card, Divider, Group, Image, Stack, Text } from '@mantine/core';
+import { User, Gauge, Cog, Fuel } from 'lucide-react';
 
+import { ReactNode } from 'react';
+import { MakeType } from '../../../store/MakeStore';
+import { ModelType } from '../../../store/ModelStore';
+type VehicleType = MakeType | (ModelType & { country?: string });
 interface OwnProps {
-  name?: string;
-  abrv?: string;
-  id?: string;
-  image?: string;
-  editBtnText?: string;
-  handleNavigation?: () => void;
-  navigateToEdit?: () => void;
-  deleteVehicle?: () => void;
+  item: VehicleType;
+  renderBtns?: ReactNode;
+  renderModelSpec?: ReactNode;
 }
-const VehicleCard: React.FC<OwnProps> = ({
-  name,
-  abrv,
-  image,
-  editBtnText,
-  handleNavigation,
-  navigateToEdit,
-  deleteVehicle,
-}) => {
-  const { id } = useParams();
 
+const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) => {
   return (
-    <Card withBorder radius="md" p={20} pos="relative">
-      <Stack gap={0}>
-        <Image src={image ?? ''} placeholder={name} mah={250} />
+    <Card withBorder radius="md">
+      <Card.Section>
+        <Image src={item.image ?? 'https://i.imgur.com/ZL52Q2D.png'} alt="image" h={200} w="100%" fit="scale-down" />
+
+        <Divider />
+      </Card.Section>
+
+      <Group justify="space-between" mt="md">
         <div>
-          <Text tt="uppercase" c="dimmed" fw={700} size="xs">
-            {name}
+          <Text fw={500} size="lg" mb="xs">
+            {item.name}
           </Text>
-          <Text mt="xs" mb="md">
-            {abrv}
+          <Text fw={500} size="sm" c="dimmed">
+            {item.abrv}
+          </Text>
+          <Text fz="sm" c="dimmed">
+            {item.country && `Made in ${item.country}`}
           </Text>
         </div>
-      </Stack>
-      <Group justify="space-between">
-        {!id && <Button onClick={handleNavigation}>View Models</Button>}
-
-        <Button onClick={navigateToEdit}>{editBtnText}</Button>
-        {!id && (
-          <Button bg="red.7" onClick={deleteVehicle}>
-            Delete Brand
-          </Button>
-        )}
-        {id && (
-          <Button bg="red.7" onClick={deleteVehicle}>
-            Delete Model
-          </Button>
-        )}
       </Group>
+
+      <Card.Section mt="md" p="md">
+        {renderModelSpec && (
+          <Text fz="sm" fw={500} c="dimmed" mb="xs" tt="uppercase" style={{ lineHeight: 1 }}>
+            Basic configuration
+          </Text>
+        )}
+
+        <Group gap={8} mb={-8}>
+          {renderModelSpec}
+        </Group>
+      </Card.Section>
+
+      <Card.Section p="md">{renderBtns}</Card.Section>
     </Card>
   );
 };

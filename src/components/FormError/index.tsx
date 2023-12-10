@@ -4,7 +4,7 @@ interface OwnProps {
   error: string;
 }
 
-const FormError = ({ error }: OwnProps) => {
+const FormError: React.FC<OwnProps> = ({ error }) => {
   return (
     <Text mt={5} c="red">
       {error}

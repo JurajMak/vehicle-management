@@ -6,17 +6,42 @@ interface UploadFileType {
   file: File;
   storageName: string;
 }
-
+interface GetParams {
+  pageIndex: number;
+  searchQuery: string;
+}
+interface GetResponse {
+  data: MakeType[];
+  pageCount: number;
+}
+const PAGE_SIZE = 5;
 export class Make {
   static makeEndpoint = 'vehicle_make';
 
-  static get = async (): Promise<MakeType[]> => {
-    let query = supabase.from(this.makeEndpoint).select('*');
-    const { data, error } = await query;
+  static get = async ({ pageIndex, searchQuery }: GetParams): Promise<GetResponse> => {
+    const range = pageIndex ? pageIndex - 1 : 0;
+    const offset = range * PAGE_SIZE;
+    let query = supabase.from(this.makeEndpoint).select('*', { count: 'exact' });
+
+    if (searchQuery) {
+      query = query.or(`name.ilike.%${searchQuery}%,abrv.ilike.%${searchQuery}%,country.ilike.%${searchQuery}%`);
+    }
+
+    if (offset) {
+      query = query.range(offset, offset + PAGE_SIZE - 1);
+    }
+
+    const { data, error, count } = await query.limit(5);
+
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+
+    const PAGE_COUNT = count !== null ? Math.ceil(count / PAGE_SIZE) : 0;
+    return {
+      data: data ?? [],
+      pageCount: PAGE_COUNT,
+    };
   };
 
   static getSingle = async (id: string): Promise<MakeType> => {
@@ -35,7 +60,7 @@ export class Make {
     }
   };
   static edit = async (values: FixMeLater): Promise<void> => {
-    const { error } = await supabase.from(this.makeEndpoint).update(values);
+    const { error } = await supabase.from(this.makeEndpoint).update(values).eq('id', values.id);
     if (error) {
       throw new Error(error.message);
     }
@@ -65,7 +90,6 @@ export class Make {
       upsert: false,
       contentType: file.type,
     });
-
     if (error) throw error;
 
     return this.getFileURL(filePathWithoutSpaces, storageName);

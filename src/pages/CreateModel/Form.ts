@@ -24,15 +24,42 @@ class CreateForm extends MobxReactForm {
         {
           name: 'abrv',
           label: 'Abbreviation',
-          placeholder: 'Insert abbreviation for vehicle model',
+          placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'image',
-          label: 'Add Model Image',
-          placeholder: 'Insert abbreviation for vehicle brand',
-          rules: '',
+          label: 'Model image',
+          rules: 'required',
+          value: '',
+        },
+        {
+          name: 'engine',
+          label: 'Model engine type',
+          placeholder: 'Insert engine type ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'body_type',
+          label: 'Model body type (Sedan,Hatchback...)',
+          placeholder: 'Insert model body type  ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'transmission',
+          label: 'Model transmission type',
+          placeholder: 'Insert model transmission type ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'year',
+          label: 'Model year',
+          placeholder: 'Insert model year',
+          rules: 'required|numeric',
           value: '',
         },
       ],
@@ -42,8 +69,7 @@ class CreateForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: FixMeLater) => {
-        const { name, abrv, image } = form.values();
-        console.log(typeof image);
+        const { name, year, body_type, image, transmission, engine } = form.values();
         const url = await Vehicle.Model.uploadFile({
           file: image,
           storageName: `uploads/${name}`,
@@ -51,13 +77,18 @@ class CreateForm extends MobxReactForm {
 
         const data = {
           name: name,
-          abrv: abrv,
+          body_type: body_type,
+          transmission: transmission,
+          year: year,
+          engine: engine,
           image: url,
           make_id: modelStore.make_id,
         };
 
         await Vehicle.Model.create(data);
+
         form.reset();
+        modelStore.cache.clear();
       },
       onError(form: FixMeLater) {
         console.log(form.errors());

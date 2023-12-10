@@ -17,21 +17,27 @@ class EditForm extends MobxReactForm {
         {
           name: 'name',
           label: 'Add vehicle brand',
-          placeholder: 'Insert new vehicle brand name',
+          placeholder: 'Insert new name',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'abrv',
-          label: 'Insert abbreviation for vehicle brand',
-          placeholder: 'Insert abbreviation for vehicle brand',
+          label: 'Insert abbreviation ',
+          placeholder: 'Insert abbreviation ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'country',
+          label: 'Add brand country',
+          placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'image',
-          label: 'Add Brand Image',
-          placeholder: 'Insert abbreviation for vehicle brand',
+          label: 'Add brand Image',
           rules: '',
           value: '',
         },
@@ -42,21 +48,35 @@ class EditForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: FixMeLater) => {
-        const { name, abrv, image } = form.values();
-        const url = await Vehicle.Make.uploadFile({
-          file: image,
-          storageName: `uploads/${name}`,
-        });
-        const data = {
-          name: name,
-          abrv: abrv,
-          image: url,
-          id: makeStore.singleMakeId,
-        };
-        await Vehicle.Make.edit(data);
+        const { name, abrv, image, country } = form.values();
+
+        if (typeof image === 'string') {
+          const data = {
+            name: name,
+            abrv: abrv,
+            image: image,
+            country: country,
+            id: makeStore.singleMakeId,
+          };
+          await Vehicle.Make.edit(data);
+        } else {
+          const url = await Vehicle.Make.uploadFile({
+            file: image,
+            storageName: `uploads/${name}`,
+          });
+          const data = {
+            name: name,
+            abrv: abrv,
+            image: url,
+            country: country,
+            id: makeStore.singleMakeId,
+          };
+          await Vehicle.Make.edit(data);
+        }
+        makeStore.cache.clear();
       },
       onError(form: FixMeLater) {
-        // console.log(form.errors());
+        console.log(form.errors());
       },
     };
   }

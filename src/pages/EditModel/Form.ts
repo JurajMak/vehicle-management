@@ -16,23 +16,49 @@ class EditForm extends MobxReactForm {
       fields: [
         {
           name: 'name',
-          label: 'Edit Vehicle Model',
-          placeholder: 'Edit vehicle model name',
+          label: 'Model name ',
+          placeholder: 'Add vehicle Model',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'abrv',
-          label: 'Edit abbreviation for vehicle model',
-          placeholder: 'Insert abbreviation for vehicle model',
+          label: 'Abbreviation',
+          placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'image',
-          label: 'Edit Vehicle Model Image',
-          placeholder: 'Insert abbreviation for vehicle brand',
-          rules: '',
+          label: 'Model image',
+          value: '',
+        },
+        {
+          name: 'engine',
+          label: 'Model engine type',
+          placeholder: 'Insert engine type ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'body_type',
+          label: 'Model body type (Sedan,Hatchback...)',
+          placeholder: 'Insert model body type  ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'transmission',
+          label: 'Model transmission type',
+          placeholder: 'Insert model transmission type ',
+          rules: 'required|string|between:1,25',
+          value: '',
+        },
+        {
+          name: 'year',
+          label: 'Model year',
+          placeholder: 'Insert model year',
+          rules: 'required|numeric',
           value: '',
         },
       ],
@@ -42,18 +68,38 @@ class EditForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: FixMeLater) => {
-        const { name, abrv, image } = form.values();
-        const url = await Vehicle.Make.uploadFile({
-          file: image,
-          storageName: `uploads/${name}`,
-        });
-        const data = {
-          name: name,
-          abrv: abrv,
-          image: url,
-          id: modelStore.singleModelId,
-        };
-        await Vehicle.Model.edit(data);
+        const { name, abrv, image, body_type, transmission, year, engine } = form.values();
+
+        if (typeof image === 'string') {
+          const data = {
+            name: name,
+            abrv: abrv,
+            body_type: body_type,
+            transmission: transmission,
+            year: year,
+            engine: engine,
+            image: image,
+            make_id: modelStore.singleModelId,
+          };
+          await Vehicle.Model.edit(data);
+        } else {
+          const url = await Vehicle.Make.uploadFile({
+            file: image,
+            storageName: `uploads/${name}`,
+          });
+          const data = {
+            name: name,
+            abrv: abrv,
+            body_type: body_type,
+            transmission: transmission,
+            year: year,
+            engine: engine,
+            image: url,
+            id: modelStore.singleModelId,
+          };
+          await Vehicle.Model.edit(data);
+        }
+        modelStore.cache.clear();
       },
       onError(form: FixMeLater) {
         console.log('All form errors', form.errors());

@@ -5,16 +5,45 @@ interface UploadFileType {
   file: File;
   storageName: string;
 }
+
+interface GetParams {
+  pageIndex: number;
+  searchQuery: string;
+  id: string;
+}
+interface GetResponse {
+  data: ModelType[];
+  pageCount: number;
+}
+const PAGE_SIZE = 5;
 export class Model {
   static modelEndpoint = 'vehicle_model';
 
-  static get = async (id: string): Promise<ModelType[]> => {
-    let query = supabase.from(this.modelEndpoint).select('*').eq('make_id', id);
-    const { data, error } = await query;
+  static get = async ({ pageIndex, searchQuery, id }: GetParams): Promise<GetResponse> => {
+    const range = pageIndex ? pageIndex - 1 : 0;
+    const offset = range * PAGE_SIZE;
+    let query = supabase.from(this.modelEndpoint).select('*', { count: 'exact' }).eq('make_id', id);
+
+    if (searchQuery) {
+      query = query.or(
+        `name.ilike.%${searchQuery}%,body_type.ilike.%${searchQuery}%,engine.ilike.%${searchQuery},transmission.ilike.%${searchQuery}`,
+      );
+    }
+
+    if (offset) {
+      query = query.range(offset, offset + PAGE_SIZE - 1);
+    }
+
+    const { data, error, count } = await query.limit(5);
     if (error) {
       throw new Error(error.message);
     }
-    return data;
+    const PAGE_COUNT = count !== null ? Math.ceil(count / PAGE_SIZE) : 0;
+
+    return {
+      data: data ?? [],
+      pageCount: PAGE_COUNT,
+    };
   };
   static getSingle = async (id: string): Promise<ModelType> => {
     let query = supabase.from(this.modelEndpoint).select('*').eq('id', id).single();

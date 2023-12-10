@@ -1,4 +1,4 @@
-import { Box, Button, Input } from '@mantine/core';
+import { Button, Input } from '@mantine/core';
 import React from 'react';
 
 interface OwnProps {
@@ -7,7 +7,7 @@ interface OwnProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FileButton = ({ variant, text, onChange }: OwnProps) => {
+const FileButton: React.FC<OwnProps> = ({ variant, text, onChange }) => {
   const inputRef = React.useRef<any>(null);
 
   const handleBtnClick = () => {
