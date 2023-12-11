@@ -9,7 +9,7 @@ interface OwnProps {
 
 const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '' }) => {
   const [inputValue, setInputValue] = React.useState<string>(initialValue);
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
     if (inputValue.length === 0) {

@@ -1,24 +1,18 @@
 import { observable, runInAction, makeObservable, action, reaction } from 'mobx';
 import { Vehicle } from '../services/Vehicle';
-
-export interface MakeType {
-  id: string;
-  created_at: Date;
-  name: string;
-  image: string;
-  abrv: string;
-  country: string;
-}
+import { IMake, IGetResponse } from '../types';
+import { act } from 'react-dom/test-utils';
 
 export class VehicleMakeStore {
-  make: MakeType[] = [];
-  singleMake: MakeType | null = null;
+  make: IMake[] = [];
+  singleMake: IMake | null = null;
   singleMakeId: string = '';
   isLoading: boolean = false;
   pageIndex: number = 1;
   pageCount: number = 1;
   searchQuery: string = '';
-  cache = new Map();
+  sort: string = '';
+  cache: Map<string, IGetResponse<IMake[]>> = new Map();
   constructor() {
     makeObservable(this, {
       make: observable,
@@ -28,17 +22,20 @@ export class VehicleMakeStore {
       pageIndex: observable,
       pageCount: observable,
       searchQuery: observable,
+      sort: observable,
       setMake: action,
       setLoading: action,
       setPageIndex: action,
       setPageCount: action,
       setSingleMake: action,
       setSearchQuery: action,
+      setSort: action,
     });
     reaction(
       () => ({
         searchQuery: this.searchQuery,
         pageIndex: this.pageIndex,
+        sort: this.sort,
       }),
       () => {
         this.getMake();
@@ -46,7 +43,7 @@ export class VehicleMakeStore {
     );
   }
 
-  setMake = (apiData: MakeType[]) => {
+  setMake = (apiData: IMake[]) => {
     this.make = apiData;
   };
   setLoading(condition: boolean) {
@@ -58,7 +55,7 @@ export class VehicleMakeStore {
   setPageCount(count: number) {
     this.pageCount = count;
   }
-  setSingleMake(apiData: MakeType, id: string) {
+  setSingleMake(apiData: IMake, id: string) {
     this.singleMake = apiData;
     this.singleMakeId = id;
   }
@@ -66,20 +63,27 @@ export class VehicleMakeStore {
     this.searchQuery = search;
   }
 
+  setSort(sort: string) {
+    this.sort = sort;
+  }
+
   async getMake() {
     this.setLoading(true);
-    const cacheKey = `Make_${this.pageIndex}_${this.searchQuery}`;
+    const cacheKey = `Make_${this.pageIndex}_${this.searchQuery}_${this.sort}`;
     if (this.cache.has(cacheKey)) {
       const cacheData = this.cache.get(cacheKey);
-      runInAction(() => {
-        this.setMake(cacheData.data);
-        this.setPageCount(cacheData.pageCount);
-        this.setLoading(false);
-      });
+      if (cacheData) {
+        runInAction(() => {
+          this.setMake(cacheData.data);
+          this.setPageCount(cacheData.pageCount);
+          this.setLoading(false);
+        });
+      }
     } else {
       const apiData = await Vehicle.Make.get({
         pageIndex: this.pageIndex,
         searchQuery: this.searchQuery,
+        sort: this.sort,
       });
       runInAction(() => {
         this.setMake(apiData.data);

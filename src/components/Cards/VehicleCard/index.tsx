@@ -1,10 +1,7 @@
-import { Card, Divider, Group, Image, Stack, Text } from '@mantine/core';
-import { User, Gauge, Cog, Fuel } from 'lucide-react';
-
+import { Card, Divider, Group, Image, Text } from '@mantine/core';
 import { ReactNode } from 'react';
-import { MakeType } from '../../../store/MakeStore';
-import { ModelType } from '../../../store/ModelStore';
-type VehicleType = MakeType | (ModelType & { country?: string });
+import { IMake, IModel } from '../../../types';
+type VehicleType = IMake | (IModel & { country?: string });
 interface OwnProps {
   item: VehicleType;
   renderBtns?: ReactNode;
@@ -28,9 +25,11 @@ const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) 
           <Text fw={500} size="sm" c="dimmed">
             {item.abrv}
           </Text>
-          <Text fz="sm" c="dimmed">
-            {item.country && `Made in ${item.country}`}
-          </Text>
+          {item.country && (
+            <Text fz="sm" c="dimmed">
+              {`Made in ${item.country}`}
+            </Text>
+          )}
         </div>
       </Group>
 

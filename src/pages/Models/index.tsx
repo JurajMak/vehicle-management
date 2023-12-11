@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { ModelType, modelStore } from '../../store/ModelStore';
+import { modelStore } from '../../stores/ModelStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import VehicleCard from '../../components/Cards/VehicleCard';
@@ -8,6 +8,10 @@ import { Edit, LucideIcon, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import SearchBar from '../../components/SearchBar';
 import { User, Cog, Fuel, CalendarDays } from 'lucide-react';
+import { IModel } from '../../types';
+import { SELECT_MODEL_DATA } from '../../utils/Constants';
+import { searchHandler, sortHandler } from '../../utils/FilteringHandlers';
+import CustomSelect from '../../components/Select';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -23,7 +27,7 @@ const ModelsList: React.FC = observer(() => {
     }
   }, []);
 
-  const handleNavigateEdit = (item: ModelType) => {
+  const handleNavigateEdit = (item: IModel) => {
     navigate(`/model/${item.id}`, { state: item });
   };
   const getDeleteId = (id: string) => {
@@ -36,16 +40,7 @@ const ModelsList: React.FC = observer(() => {
     close();
   };
 
-  const searchHandler = (query: string) => {
-    if (query.length > 0) {
-      modelStore.setPageIndex(1);
-      modelStore.setSearchQuery(query ?? '');
-    } else {
-      modelStore.setSearchQuery('');
-    }
-  };
-
-  const handleRenderBtns: (item: ModelType) => JSX.Element = item => {
+  const handleRenderBtns: (item: IModel) => JSX.Element = item => {
     return (
       <Group gap={30} justify="right">
         <Group>
@@ -60,7 +55,7 @@ const ModelsList: React.FC = observer(() => {
     );
   };
 
-  const handleModelSpec: (item: ModelType) => JSX.Element[] = item => {
+  const handleModelSpec: (item: IModel) => JSX.Element[] = item => {
     interface OwnProps {
       label: string | number;
       icon: LucideIcon;
@@ -81,6 +76,9 @@ const ModelsList: React.FC = observer(() => {
       </Group>
     ));
   };
+  const selectData = React.useMemo(() => {
+    return SELECT_MODEL_DATA.map(item => item);
+  }, [SELECT_MODEL_DATA]);
 
   return (
     <>
@@ -94,7 +92,15 @@ const ModelsList: React.FC = observer(() => {
       ) : (
         <Container size="xl" mx="auto">
           <Group justify="center" my="lg">
-            <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
+            <SearchBar
+              onChange={value => searchHandler({ query: value, store: modelStore })}
+              initialValue={modelStore.searchQuery}
+            />
+            <CustomSelect
+              data={selectData}
+              initialValue={modelStore.sort}
+              onChange={value => sortHandler({ query: value, store: modelStore })}
+            />
           </Group>
           <Grid gutter="xl" align="center">
             {modelStore.models.map(item => {

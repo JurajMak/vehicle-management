@@ -3,7 +3,7 @@ import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { FixMeLater } from '../../types';
-import { modelStore } from '../../store/ModelStore';
+import { modelStore } from '../../stores/ModelStore';
 
 class CreateForm extends MobxReactForm {
   plugins() {

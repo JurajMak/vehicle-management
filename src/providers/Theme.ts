@@ -18,15 +18,15 @@ export const theme = createTheme({
     ],
   },
   defaultRadius: 'md',
-  // components: {
-  //   Modal: {
-  //     defaultProps: {
-  //       centered: true,
-  //       overlayProps: {
-  //         backgroundOpacity: 0.55,
-  //         blur: 3,
-  //       },
-  //     },
-  //   },
-  // },
+  components: {
+    Modal: {
+      defaultProps: {
+        centered: true,
+        overlayProps: {
+          backgroundOpacity: 0.55,
+          blur: 3,
+        },
+      },
+    },
+  },
 });

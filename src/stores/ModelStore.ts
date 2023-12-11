@@ -1,30 +1,18 @@
 import { observable, runInAction, makeObservable, action, reaction } from 'mobx';
-
+import { IGetResponse, IModel } from '../types';
 import { Vehicle } from '../services/Vehicle';
 
-export interface ModelType {
-  id: string;
-  created_at: Date;
-  name: string;
-  abrv: string;
-  make_id: string;
-  image: string;
-  body_type: string;
-  year: number;
-  transmission: string;
-  engine: string;
-}
-
 export class VehicleModelStore {
-  models: ModelType[] = [];
+  models: IModel[] = [];
   make_id: string = '';
-  singleModel: ModelType | null = null;
+  singleModel: IModel | null = null;
   singleModelId: string = '';
   isLoading: boolean = false;
   pageIndex: number = 1;
   pageCount: number = 1;
   searchQuery: string = '';
-  cache = new Map();
+  sort: string = '';
+  cache: Map<string, IGetResponse<IModel[]>> = new Map();
   constructor() {
     makeObservable(this, {
       models: observable,
@@ -35,6 +23,7 @@ export class VehicleModelStore {
       pageCount: observable,
       searchQuery: observable,
       isLoading: observable,
+      sort: observable,
       setModels: action,
       setLoading: action,
       setSingleModel: action,
@@ -42,11 +31,13 @@ export class VehicleModelStore {
       setPageIndex: action,
       setPageCount: action,
       setSearchQuery: action,
+      setSort: action,
     });
     reaction(
       () => ({
         searchQuery: this.searchQuery,
         pageIndex: this.pageIndex,
+        sort: this.sort,
       }),
       () => {
         this.getModels(this.make_id);
@@ -54,10 +45,9 @@ export class VehicleModelStore {
     );
   }
 
-  setModels(apiData: ModelType[], id: string) {
+  setModels(apiData: IModel[], id: string) {
     this.models = apiData;
     this.make_id = id;
-    console.log(this.isLoading, 'loading');
   }
   setLoading(condition: boolean) {
     this.isLoading = condition;
@@ -71,26 +61,32 @@ export class VehicleModelStore {
   setSearchQuery(search: string) {
     this.searchQuery = search;
   }
-  setSingleModel(apiData: ModelType, id: string) {
+  setSingleModel(apiData: IModel, id: string) {
     this.singleModel = apiData;
     this.singleModelId = id;
+  }
+  setSort(sort: string) {
+    this.sort = sort;
   }
 
   async getModels(id: string) {
     this.setLoading(true);
-    const cacheKey = `Model_${this.pageIndex}_${this.searchQuery}_${id}`;
+    const cacheKey = `Model_${this.pageIndex}_${this.searchQuery}_${id}_${this.sort}`;
     if (this.cache.has(cacheKey)) {
       const cacheData = this.cache.get(cacheKey);
-      runInAction(() => {
-        this.setModels(cacheData.data, id);
-        this.setPageCount(cacheData.pageCount);
-        this.setLoading(false);
-      });
+      if (cacheData) {
+        runInAction(() => {
+          this.setModels(cacheData.data, id);
+          this.setPageCount(cacheData.pageCount);
+          this.setLoading(false);
+        });
+      }
     } else {
       const apiData = await Vehicle.Model.get({
         pageIndex: this.pageIndex,
         searchQuery: this.searchQuery,
         id,
+        sort: this.sort,
       });
       runInAction(() => {
         this.setModels(apiData.data, id);

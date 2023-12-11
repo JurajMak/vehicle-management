@@ -1,28 +1,25 @@
-import { ModelType } from '../../../store/ModelStore';
-import { FixMeLater } from '../../../types';
 import { supabase } from '../../Supabase';
-interface UploadFileType {
-  file: File;
-  storageName: string;
-}
+import { IGetResponse, IGetParams, IUploadFile, FixMeLater, IModel } from '../../../types';
 
-interface GetParams {
-  pageIndex: number;
-  searchQuery: string;
-  id: string;
-}
-interface GetResponse {
-  data: ModelType[];
-  pageCount: number;
-}
 const PAGE_SIZE = 5;
 export class Model {
   static modelEndpoint = 'vehicle_model';
 
-  static get = async ({ pageIndex, searchQuery, id }: GetParams): Promise<GetResponse> => {
+  static get = async ({ pageIndex, searchQuery, id, sort }: IGetParams): Promise<IGetResponse<IModel[]>> => {
     const range = pageIndex ? pageIndex - 1 : 0;
     const offset = range * PAGE_SIZE;
     let query = supabase.from(this.modelEndpoint).select('*', { count: 'exact' }).eq('make_id', id);
+
+    const sortActions: any = {
+      'NameA ': () => query.order('name', { ascending: true }),
+      'NameD ': () => query.order('name', { ascending: false }),
+      'yearA ': () => query.order('year', { ascending: true }),
+      'yearD ': () => query.order('year', { ascending: false }),
+    };
+
+    if (sort && sortActions.hasOwnProperty(sort)) {
+      query = sortActions[sort]();
+    }
 
     if (searchQuery) {
       query = query.or(
@@ -45,7 +42,7 @@ export class Model {
       pageCount: PAGE_COUNT,
     };
   };
-  static getSingle = async (id: string): Promise<ModelType> => {
+  static getSingle = async (id: string): Promise<IModel> => {
     let query = supabase.from(this.modelEndpoint).select('*').eq('id', id).single();
     const { data, error } = await query;
     if (error) {
@@ -80,7 +77,7 @@ export class Model {
     return data?.publicUrl;
   };
 
-  static uploadFile = async ({ file, storageName }: UploadFileType): Promise<string> => {
+  static uploadFile = async ({ file, storageName }: IUploadFile): Promise<string> => {
     const fileName = file.name.split('.');
     const fileExt = fileName.pop();
 

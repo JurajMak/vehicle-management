@@ -71,7 +71,7 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
                 <Image src={imgPreview} alt="image" h={300} w="100%" fit="contain" />
               </Paper>
             </Grid.Col>
-            <Grid.Col offset={8}>
+            <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>
               <Box>
                 <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
               </Box>

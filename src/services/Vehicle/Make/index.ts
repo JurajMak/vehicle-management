@@ -1,28 +1,25 @@
 import { supabase } from '../../Supabase';
-import { MakeType } from '../../../store/MakeStore';
-import { FixMeLater } from '../../../types';
+import { IGetResponse, IGetParams, IUploadFile, FixMeLater, IMake } from '../../../types';
 
-interface UploadFileType {
-  file: File;
-  storageName: string;
-}
-interface GetParams {
-  pageIndex: number;
-  searchQuery: string;
-}
-interface GetResponse {
-  data: MakeType[];
-  pageCount: number;
-}
 const PAGE_SIZE = 5;
 export class Make {
   static makeEndpoint = 'vehicle_make';
 
-  static get = async ({ pageIndex, searchQuery }: GetParams): Promise<GetResponse> => {
+  static get = async ({ pageIndex, searchQuery, sort }: IGetParams): Promise<IGetResponse<IMake[]>> => {
     const range = pageIndex ? pageIndex - 1 : 0;
     const offset = range * PAGE_SIZE;
     let query = supabase.from(this.makeEndpoint).select('*', { count: 'exact' });
 
+    const sortActions: any = {
+      'NameA ': () => query.order('name', { ascending: true }),
+      'NameD ': () => query.order('name', { ascending: false }),
+      'CountryA ': () => query.order('country', { ascending: true }),
+      'CountryD ': () => query.order('country', { ascending: false }),
+    };
+
+    if (sort && sortActions.hasOwnProperty(sort)) {
+      query = sortActions[sort]();
+    }
     if (searchQuery) {
       query = query.or(`name.ilike.%${searchQuery}%,abrv.ilike.%${searchQuery}%,country.ilike.%${searchQuery}%`);
     }
@@ -44,7 +41,7 @@ export class Make {
     };
   };
 
-  static getSingle = async (id: string): Promise<MakeType> => {
+  static getSingle = async (id: string): Promise<IMake> => {
     let query = supabase.from(this.makeEndpoint).select('*').eq('id', id).single();
     const { data, error } = await query;
     if (error) {
@@ -78,7 +75,7 @@ export class Make {
     return data?.publicUrl;
   };
 
-  static uploadFile = async ({ file, storageName }: UploadFileType): Promise<string> => {
+  static uploadFile = async ({ file, storageName }: IUploadFile): Promise<string> => {
     const fileName = file.name.split('.');
     const fileExt = fileName.pop();
 

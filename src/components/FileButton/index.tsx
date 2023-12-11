@@ -8,9 +8,12 @@ interface OwnProps {
 }
 
 const FileButton: React.FC<OwnProps> = ({ variant, text, onChange }) => {
-  const inputRef = React.useRef<any>(null);
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const handleBtnClick = () => {
+    if (inputRef.current === null) {
+      return;
+    }
     inputRef.current.click();
   };
   return (

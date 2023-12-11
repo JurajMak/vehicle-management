@@ -7,7 +7,7 @@ import FileButton from '../../components/FileButton';
 import { useParams } from 'react-router-dom';
 import { FixMeLater } from '../../types';
 import FormError from '../../components/FormError';
-import { makeStore } from '../../store/MakeStore';
+import { makeStore } from '../../stores/MakeStore';
 import { successCreation } from '../../components/Notifications';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
@@ -24,7 +24,6 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
     form.$('image').set(selectedFile);
-    console.log(selectedFile, 'file');
   };
 
   const removePreview = () => {
@@ -91,7 +90,7 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
                   <Image src={imgPreview} alt="image" />
                 </Paper>
               </Grid.Col>
-              <Grid.Col offset={8}>
+              <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>
                 <Box>
                   <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
                 </Box>

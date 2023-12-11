@@ -1,12 +1,16 @@
 import React, { lazy, Suspense } from 'react';
 import { observer } from 'mobx-react';
-import { MakeType, makeStore } from '../../store/MakeStore';
+import { makeStore } from '../../stores/MakeStore';
 import { useNavigate } from 'react-router-dom';
 import { ActionIcon, Button, Container, Grid, Group, LoadingOverlay, Pagination } from '@mantine/core';
 import VehicleCard from '../../components/Cards/VehicleCard';
 import SearchBar from '../../components/SearchBar';
 import { Edit, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
+import { IMake } from '../../types';
+import CustomSelect from '../../components/Select';
+import { SELECT_MAKE_DATA } from '../../utils/Constants';
+import { searchHandler, sortHandler } from '../../utils/FilteringHandlers';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -19,29 +23,20 @@ const Home: React.FC = observer(() => {
     makeStore.getMake();
   }, []);
 
-  const handleNavigateEdit = (item: MakeType) => {
+  const handleNavigateEdit = (item: IMake) => {
     navigate(`brand/${item.id}`, { state: item });
   };
 
-  const searchHandler = (query: string) => {
-    if (query.length > 0) {
-      makeStore.setPageIndex(1);
-      makeStore.setSearchQuery(query ?? '');
-    } else {
-      makeStore.setSearchQuery('');
-    }
-  };
-
-  const getDeleteId = (id: string) => {
+  const getDeleteId = (item: string) => {
     open();
-    setDeleteId(id);
+    setDeleteId(item);
   };
   const handleDelete = (id: string) => {
     makeStore.deleteMake(id);
     close();
   };
 
-  const handleRenderBtns = (item: MakeType) => {
+  const handleRenderBtns: (item: IMake) => JSX.Element = item => {
     return (
       <Group gap={30} justify="space-between">
         <Button onClick={() => navigate(`models/${item.id}`)}>View Models</Button>
@@ -57,6 +52,10 @@ const Home: React.FC = observer(() => {
     );
   };
 
+  const selectData = React.useMemo(() => {
+    return SELECT_MAKE_DATA.map(item => item);
+  }, [SELECT_MAKE_DATA]);
+
   return (
     <>
       {makeStore.isLoading ? (
@@ -69,7 +68,15 @@ const Home: React.FC = observer(() => {
       ) : (
         <Container size="xl" mx="auto">
           <Group justify="center" my="lg">
-            <SearchBar onChange={searchHandler} initialValue={makeStore.searchQuery} />
+            <SearchBar
+              onChange={value => searchHandler({ query: value, store: makeStore })}
+              initialValue={makeStore.searchQuery}
+            />
+            <CustomSelect
+              data={selectData}
+              initialValue={makeStore.sort}
+              onChange={value => sortHandler({ query: value, store: makeStore })}
+            />
           </Group>
           <Grid gutter="xl" align="center">
             {makeStore.make.map(item => {

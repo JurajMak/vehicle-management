@@ -1,7 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
-import { AppShell, Burger, Group } from '@mantine/core';
+import { AppShell, Box, Burger, Group, Title } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
-
 import NavTabs from '../Tabs';
 
 export const Layout: React.FC = () => {
@@ -16,15 +15,18 @@ export const Layout: React.FC = () => {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Group justify="center" style={{ flex: 1 }}>
+          <Group justify="space-evenly" style={{ flex: 1 }} visibleFrom="sm">
+            <Title order={3}>Vehicle Management</Title>
             <NavTabs />
           </Group>
+          <Box mx="auto" hiddenFrom="sm">
+            <Title order={3}>Vehicle Management</Title>
+          </Box>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar py="md" px={4}>
-        {/* <UnstyledButton onClick={() => navigate(ROUTES.HOME)}>Home</UnstyledButton>
-        <UnstyledButton onClick={() => navigate(ROUTES.CREATE)}>Add Vehicle</UnstyledButton> */}
+        <NavTabs toggle={toggle} />
       </AppShell.Navbar>
 
       <AppShell.Main>

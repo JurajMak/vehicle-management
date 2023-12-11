@@ -12,7 +12,6 @@ const ConfirmModal: React.FC<OwnProps> = ({ opened, close, deleteVehicle }) => {
     <Modal
       opened={opened}
       onClose={close}
-      centered
       title={`Are you sure you want to delete vehicle?`}
       size="lg"
       styles={{

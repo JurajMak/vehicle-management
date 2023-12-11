@@ -2,7 +2,7 @@ import MobxReactForm from 'mobx-react-form';
 import dvr from 'mobx-react-form/lib/validators/DVR';
 import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
-import { makeStore } from '../../store/MakeStore';
+import { makeStore } from '../../stores/MakeStore';
 import { FixMeLater } from '../../types';
 
 class EditForm extends MobxReactForm {

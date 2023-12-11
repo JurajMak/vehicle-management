@@ -15,8 +15,8 @@ import {
 } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
-import { makeStore } from '../../store/MakeStore';
-import { modelStore } from '../../store/ModelStore';
+import { makeStore } from '../../stores/MakeStore';
+import { modelStore } from '../../stores/ModelStore';
 import { FixMeLater } from '../../types';
 import { successEdit } from '../../components/Notifications';
 import FormError from '../../components/FormError';
@@ -117,7 +117,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
                     <Image src={convert ?? modelStore.singleModel?.image} alt="image" />
                   </Paper>
                 </Grid.Col>
-                <Grid.Col offset={8}>
+                <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>
                   <Box>
                     <FileButton variant="outline" text="Upload Image" onChange={e => handlePreview(e)} />
                   </Box>
