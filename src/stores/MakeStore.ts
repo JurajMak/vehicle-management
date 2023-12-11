@@ -1,7 +1,6 @@
 import { observable, runInAction, makeObservable, action, reaction } from 'mobx';
 import { Vehicle } from '../services/Vehicle';
 import { IMake, IGetResponse } from '../types';
-import { act } from 'react-dom/test-utils';
 
 export class VehicleMakeStore {
   make: IMake[] = [];

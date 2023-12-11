@@ -10,7 +10,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IMake } from '../../types';
 import CustomSelect from '../../components/Select';
 import { SELECT_MAKE_DATA } from '../../utils/Constants';
-import { searchHandler, sortHandler } from '../../utils/FilteringHandlers';
+import { sortHandler } from '../../utils/FilteringHandlers';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -34,6 +34,15 @@ const Home: React.FC = observer(() => {
   const handleDelete = (id: string) => {
     makeStore.deleteMake(id);
     close();
+  };
+
+  const searchHandler = (query: string) => {
+    if (query.length > 0) {
+      makeStore.setPageIndex(1);
+      makeStore.setSearchQuery(query ?? '');
+    } else {
+      makeStore.setSearchQuery('');
+    }
   };
 
   const handleRenderBtns: (item: IMake) => JSX.Element = item => {
@@ -68,10 +77,7 @@ const Home: React.FC = observer(() => {
       ) : (
         <Container size="xl" mx="auto">
           <Group justify="center" my="lg">
-            <SearchBar
-              onChange={value => searchHandler({ query: value, store: makeStore })}
-              initialValue={makeStore.searchQuery}
-            />
+            <SearchBar onChange={searchHandler} initialValue={makeStore.searchQuery} />
             <CustomSelect
               data={selectData}
               initialValue={makeStore.sort}

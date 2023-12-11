@@ -10,7 +10,7 @@ import SearchBar from '../../components/SearchBar';
 import { User, Cog, Fuel, CalendarDays } from 'lucide-react';
 import { IModel } from '../../types';
 import { SELECT_MODEL_DATA } from '../../utils/Constants';
-import { searchHandler, sortHandler } from '../../utils/FilteringHandlers';
+import { sortHandler } from '../../utils/FilteringHandlers';
 import CustomSelect from '../../components/Select';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
@@ -38,6 +38,15 @@ const ModelsList: React.FC = observer(() => {
   const handleDelete = (id: string) => {
     modelStore.deleteModel(id);
     close();
+  };
+
+  const searchHandler = (query: string) => {
+    if (query.length > 0) {
+      modelStore.setPageIndex(1);
+      modelStore.setSearchQuery(query ?? '');
+    } else {
+      modelStore.setSearchQuery('');
+    }
   };
 
   const handleRenderBtns: (item: IModel) => JSX.Element = item => {
@@ -92,10 +101,7 @@ const ModelsList: React.FC = observer(() => {
       ) : (
         <Container size="xl" mx="auto">
           <Group justify="center" my="lg">
-            <SearchBar
-              onChange={value => searchHandler({ query: value, store: modelStore })}
-              initialValue={modelStore.searchQuery}
-            />
+            <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
             <CustomSelect
               data={selectData}
               initialValue={modelStore.sort}
