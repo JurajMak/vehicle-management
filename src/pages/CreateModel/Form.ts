@@ -69,7 +69,7 @@ class CreateForm extends MobxReactForm {
   hooks() {
     return {
       onSuccess: async (form: FixMeLater) => {
-        const { name, year, body_type, image, transmission, engine } = form.values();
+        const { name, abrv, year, body_type, image, transmission, engine } = form.values();
         const url = await Vehicle.Model.uploadFile({
           file: image,
           storageName: `uploads/${name}`,
@@ -77,6 +77,7 @@ class CreateForm extends MobxReactForm {
 
         const data = {
           name: name,
+          abrv: abrv,
           body_type: body_type,
           transmission: transmission,
           year: year,

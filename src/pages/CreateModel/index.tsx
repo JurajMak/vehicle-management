@@ -9,6 +9,7 @@ import { FixMeLater } from '../../types';
 import FormError from '../../components/FormError';
 import { makeStore } from '../../stores/MakeStore';
 import { successCreation } from '../../components/Notifications';
+import CustomInput from '../../components/CustomInput';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -56,29 +57,47 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
           <form onSubmit={handleSubmit}>
             <Grid gutter="xl">
               <Grid.Col>
-                <TextInput {...form.$('name').bind()} />
-                {form.errors().name && <FormError error={form.$('name').error} />}
+                <CustomInput
+                  field={{ ...form.$('name').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('name').error}
+                />
               </Grid.Col>
 
               <Grid.Col>
-                <TextInput {...form.$('abrv').bind()} />
-                {form.errors().abrv && <FormError error={form.$('abrv').error} />}
+                <CustomInput
+                  field={{ ...form.$('abrv').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('abrv').error}
+                />
               </Grid.Col>
               <Grid.Col>
-                <TextInput {...form.$('year').bind()} />
-                {form.errors().abrv && <FormError error={form.$('year').error} />}
+                <CustomInput
+                  field={{ ...form.$('year').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('year').error}
+                />
               </Grid.Col>
               <Grid.Col>
-                <TextInput {...form.$('engine').bind()} />
-                {form.errors().abrv && <FormError error={form.$('engine').error} />}
+                <CustomInput
+                  field={{ ...form.$('engine').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('engine').error}
+                />
               </Grid.Col>
               <Grid.Col>
-                <TextInput {...form.$('body_type').bind()} />
-                {form.errors().abrv && <FormError error={form.$('body_type').error} />}
+                <CustomInput
+                  field={{ ...form.$('body_type').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('body_type').error}
+                />
               </Grid.Col>
               <Grid.Col>
-                <TextInput {...form.$('transmission').bind()} />
-                {form.errors().abrv && <FormError error={form.$('transmission').error} />}
+                <CustomInput
+                  field={{ ...form.$('transmission').bind() }}
+                  formError={form.errors().name}
+                  errorText={form.$('transmission').error}
+                />
               </Grid.Col>
               <Grid.Col>
                 <Text fw={500} size="sm" py={5}>

@@ -10,15 +10,7 @@ interface OwnProps {
 
 const CustomSelect: React.FC<OwnProps> = ({ data, initialValue = '', onChange }) => {
   return (
-    <Select
-      placeholder="Sort by..."
-      data={data}
-      value={initialValue}
-      clearable
-      onChange={value => {
-        onChange(value);
-      }}
-    />
+    <Select placeholder="Sort by..." data={data} value={initialValue} clearable onChange={value => onChange(value)} />
   );
 };
 

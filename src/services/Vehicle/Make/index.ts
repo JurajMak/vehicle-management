@@ -1,7 +1,7 @@
 import { supabase } from '../../Supabase';
 import { IGetResponse, IGetParams, IUploadFile, FixMeLater, IMake } from '../../../types';
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 4;
 export class Make {
   static makeEndpoint = 'vehicle_make';
 
@@ -28,7 +28,7 @@ export class Make {
       query = query.range(offset, offset + PAGE_SIZE - 1);
     }
 
-    const { data, error, count } = await query.limit(5);
+    const { data, error, count } = await query.limit(4);
 
     if (error) {
       throw new Error(error.message);
@@ -51,7 +51,7 @@ export class Make {
   };
 
   static create = async (values: FixMeLater): Promise<void> => {
-    const { error } = await supabase.from(this.makeEndpoint).insert(values).eq('id', values.id);
+    const { error } = await supabase.from(this.makeEndpoint).insert(values);
     if (error) {
       throw new Error(error.message);
     }

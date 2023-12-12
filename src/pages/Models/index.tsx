@@ -3,7 +3,7 @@ import { modelStore } from '../../stores/ModelStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import VehicleCard from '../../components/Cards/VehicleCard';
-import { ActionIcon, Container, Grid, Group, LoadingOverlay, Pagination, Text } from '@mantine/core';
+import { ActionIcon, Button, Container, Grid, Group, LoadingOverlay, Pagination, Text } from '@mantine/core';
 import { Edit, LucideIcon, X } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import SearchBar from '../../components/SearchBar';
@@ -51,15 +51,11 @@ const ModelsList: React.FC = observer(() => {
 
   const handleRenderBtns: (item: IModel) => JSX.Element = item => {
     return (
-      <Group gap={30} justify="right">
-        <Group>
-          <ActionIcon variant="transparent" onClick={() => handleNavigateEdit({ ...item })}>
-            <Edit />
-          </ActionIcon>
-          <ActionIcon variant="transparent" c="red" onClick={() => getDeleteId(item.id)}>
-            <X />
-          </ActionIcon>
-        </Group>
+      <Group gap={30} justify="space-between">
+        <Button onClick={() => handleNavigateEdit({ ...item })}>Edit Model</Button>
+        <Button color="red" onClick={() => getDeleteId(item.id)}>
+          Delete Model
+        </Button>
       </Group>
     );
   };
@@ -85,6 +81,18 @@ const ModelsList: React.FC = observer(() => {
       </Group>
     ));
   };
+
+  const renderWarning: () => JSX.Element = () => {
+    return (
+      <Text size="md">
+        This action cannot be undone. This will permanently delete selected
+        <Text fw={500} span c="red" ml={5} inherit>
+          Model !
+        </Text>
+      </Text>
+    );
+  };
+
   const selectData = React.useMemo(() => {
     return SELECT_MODEL_DATA.map(item => item);
   }, [SELECT_MODEL_DATA]);
@@ -122,6 +130,7 @@ const ModelsList: React.FC = observer(() => {
             })}
           </Grid>
           <Pagination
+            mt="xl"
             total={modelStore.pageCount}
             value={modelStore.pageIndex}
             onChange={value => modelStore.setPageIndex(value)}
@@ -129,7 +138,12 @@ const ModelsList: React.FC = observer(() => {
 
           {opened && (
             <Suspense fallback={opened}>
-              <ConfirmModal opened={opened} close={close} deleteVehicle={() => handleDelete(deleteId)} />
+              <ConfirmModal
+                renderWarning={renderWarning}
+                opened={opened}
+                close={close}
+                deleteVehicle={() => handleDelete(deleteId)}
+              />
             </Suspense>
           )}
         </Container>

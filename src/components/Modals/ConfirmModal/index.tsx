@@ -5,9 +5,10 @@ interface OwnProps {
   opened: boolean;
   close: () => void;
   deleteVehicle?: () => void;
+  renderWarning: () => JSX.Element;
 }
 
-const ConfirmModal: React.FC<OwnProps> = ({ opened, close, deleteVehicle }) => {
+const ConfirmModal: React.FC<OwnProps> = ({ opened, close, deleteVehicle, renderWarning }) => {
   return (
     <Modal
       opened={opened}
@@ -22,7 +23,7 @@ const ConfirmModal: React.FC<OwnProps> = ({ opened, close, deleteVehicle }) => {
       }}
     >
       <Stack>
-        <Text size="md">This action cannot be undone. This will permanently delete selected Vehicle!</Text>
+        {renderWarning()}
         <Group justify="right" mt="lg">
           <Button variant="outline" onClick={close}>
             Cancel

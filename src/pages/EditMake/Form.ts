@@ -49,7 +49,6 @@ class EditForm extends MobxReactForm {
     return {
       onSuccess: async (form: FixMeLater) => {
         const { name, abrv, image, country } = form.values();
-
         if (typeof image === 'string') {
           const data = {
             name: name,

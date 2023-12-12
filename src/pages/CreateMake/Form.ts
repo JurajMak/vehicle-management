@@ -59,9 +59,10 @@ class CreateForm extends MobxReactForm {
           country: country,
           image: url,
         };
+
         await Vehicle.Make.create(data);
-        makeStore.cache.clear();
         form.reset();
+        makeStore.cache.clear();
       },
       onError(form: FixMeLater) {
         console.log(form.errors());

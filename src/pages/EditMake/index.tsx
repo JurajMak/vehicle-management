@@ -1,28 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import {
-  Box,
-  Button,
-  CloseButton,
-  Container,
-  Grid,
-  Image,
-  LoadingOverlay,
-  Paper,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Box, Button, CloseButton, Container, Grid, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
 import { makeStore } from '../../stores/MakeStore';
 import { FixMeLater } from '../../types';
-import FormError from '../../components/FormError';
+import CustomInput from '../../components/CustomInput';
+import { successEdit } from '../../components/Notifications';
 
 const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   const convert = file && URL.createObjectURL(file);
+
   const { id }: FixMeLater = useParams();
 
   const handlePreview: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -42,7 +33,12 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
+    if (!form.hasError) {
+      successEdit('brand');
+    }
   };
+
+  console.log(convert, 'conver');
 
   const handleState = () => {
     makeStore.getSingleMake(id);
@@ -77,24 +73,33 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
             <form onSubmit={handleSubmit}>
               <Grid gutter="xl">
                 <Grid.Col>
-                  <TextInput {...form.$('name').bind()} />
-                  {form.errors().name && <FormError error={form.$('name').error} />}
+                  <CustomInput
+                    field={{ ...form.$('name').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('name').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
-                  <TextInput {...form.$('abrv').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('abrv').error} />}
+                  <CustomInput
+                    field={{ ...form.$('abrv').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('abrv').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
-                  <TextInput {...form.$('country').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('country').error} />}
+                  <CustomInput
+                    field={{ ...form.$('country').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('country').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
                   <Paper withBorder mah="20rem" maw="50rem" pos="relative">
                     <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                    <Image src={makeStore.singleMake?.image ?? convert} alt="image" />
+                    <Image src={convert ?? makeStore.singleMake?.image} alt="image" />
                   </Paper>
                 </Grid.Col>
                 <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>

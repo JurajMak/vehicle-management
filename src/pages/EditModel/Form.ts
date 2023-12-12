@@ -69,7 +69,6 @@ class EditForm extends MobxReactForm {
     return {
       onSuccess: async (form: FixMeLater) => {
         const { name, abrv, image, body_type, transmission, year, engine } = form.values();
-
         if (typeof image === 'string') {
           const data = {
             name: name,
@@ -79,9 +78,10 @@ class EditForm extends MobxReactForm {
             year: year,
             engine: engine,
             image: image,
-            make_id: modelStore.singleModelId,
+            id: modelStore.singleModelId,
           };
           await Vehicle.Model.edit(data);
+          modelStore.cache.clear();
         } else {
           const url = await Vehicle.Make.uploadFile({
             file: image,
@@ -98,8 +98,8 @@ class EditForm extends MobxReactForm {
             id: modelStore.singleModelId,
           };
           await Vehicle.Model.edit(data);
+          modelStore.cache.clear();
         }
-        modelStore.cache.clear();
       },
       onError(form: FixMeLater) {
         console.log('All form errors', form.errors());

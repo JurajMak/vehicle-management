@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { observer } from 'mobx-react';
 import { makeStore } from '../../stores/MakeStore';
 import { useNavigate } from 'react-router-dom';
-import { ActionIcon, Button, Container, Grid, Group, LoadingOverlay, Pagination } from '@mantine/core';
+import { ActionIcon, Button, Container, Grid, Group, LoadingOverlay, Pagination, Text } from '@mantine/core';
 import VehicleCard from '../../components/Cards/VehicleCard';
 import SearchBar from '../../components/SearchBar';
 import { Edit, X } from 'lucide-react';
@@ -60,6 +60,16 @@ const Home: React.FC = observer(() => {
       </Group>
     );
   };
+  const renderWarning: () => JSX.Element = () => {
+    return (
+      <Text size="md">
+        This action cannot be undone. This will permanently delete selected
+        <Text fw={500} span c="red" mx={5} inherit>
+          Vehicle and all associated Models !
+        </Text>
+      </Text>
+    );
+  };
 
   const selectData = React.useMemo(() => {
     return SELECT_MAKE_DATA.map(item => item);
@@ -95,6 +105,7 @@ const Home: React.FC = observer(() => {
           </Grid>
 
           <Pagination
+            mt="xl"
             total={makeStore.pageCount}
             value={makeStore.pageIndex}
             onChange={value => makeStore.setPageIndex(value)}
@@ -103,7 +114,12 @@ const Home: React.FC = observer(() => {
       )}
       {opened && (
         <Suspense fallback={opened}>
-          <ConfirmModal opened={opened} close={close} deleteVehicle={() => handleDelete(deleteId)} />
+          <ConfirmModal
+            opened={opened}
+            renderWarning={renderWarning}
+            close={close}
+            deleteVehicle={() => handleDelete(deleteId)}
+          />
         </Suspense>
       )}
     </>

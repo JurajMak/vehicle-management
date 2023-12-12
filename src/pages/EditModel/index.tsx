@@ -43,7 +43,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
-    successEdit(`${makeStore.singleMake?.name}`, 'model');
+    successEdit('model');
   };
 
   const handleState = () => {

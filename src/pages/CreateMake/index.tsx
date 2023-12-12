@@ -1,12 +1,12 @@
-import { TextInput, Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
+import { Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { createForm } from './Form';
 import placeholderImg from '../../assets/images/placeholder.png';
 import FileButton from '../../components/FileButton';
 import { FixMeLater } from '../../types';
-import FormError from '../../components/FormError';
 import { successCreation } from '../../components/Notifications';
+import CustomInput from '../../components/CustomInput';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -48,24 +48,33 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
         <form onSubmit={handleSubmit}>
           <Grid gutter="xl">
             <Grid.Col>
-              <TextInput {...form.$('name').bind()} />
-              {form.errors().name && <FormError error={form.$('name').error} />}
+              <CustomInput
+                field={{ ...form.$('name').bind() }}
+                formError={form.errors().name}
+                errorText={form.$('name').error}
+              />
             </Grid.Col>
 
             <Grid.Col>
-              <TextInput {...form.$('abrv').bind()} />
-              {form.errors().abrv && <FormError error={form.$('abrv').error} />}
+              <CustomInput
+                field={{ ...form.$('abrv').bind() }}
+                formError={form.errors().name}
+                errorText={form.$('abrv').error}
+              />
             </Grid.Col>
             <Grid.Col>
-              <TextInput {...form.$('country').bind()} />
-              {form.errors().country && <FormError error={form.$('country').error} />}
+              <CustomInput
+                field={{ ...form.$('country').bind() }}
+                formError={form.errors().name}
+                errorText={form.$('country').error}
+              />
             </Grid.Col>
 
             <Grid.Col>
               <Text fw={500} size="sm" py={5}>
                 Add image
               </Text>
-              {form.errors().image && <FormError error={form.$('image').error} />}
+              {form.errors().image && <Text>{form.$('image').error}</Text>}
               <Paper withBorder mah="20rem" maw="50rem" pos="relative">
                 <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
                 <Image src={imgPreview} alt="image" h={300} w="100%" fit="contain" />

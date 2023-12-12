@@ -9,11 +9,11 @@ export const successCreation = (item: string) => {
   });
 };
 
-export const successEdit = (brand: string | null, model?: string) => {
+export const successEdit = (item: string) => {
   notifications.show({
     color: 'green',
     title: 'Success',
-    message: `Successful edit of ${brand} ${model}`,
+    message: `Successful edit of ${item}`,
     autoClose: 2000,
   });
 };
