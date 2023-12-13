@@ -9,14 +9,11 @@ interface OwnProps {
 
 const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '' }) => {
   const [inputValue, setInputValue] = React.useState<string>(initialValue);
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
     if (inputValue.length === 0) {
       onChange(inputValue);
-      inputRef.current?.focus();
     }
-    inputRef.current?.focus();
   }, [inputValue]);
 
   return (
@@ -31,7 +28,6 @@ const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '' }) => {
           onChange(inputValue);
         }
       }}
-      ref={inputRef}
       placeholder="Search..."
       radius="md"
       leftSection={<Search size={20} />}

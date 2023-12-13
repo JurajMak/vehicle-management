@@ -111,7 +111,7 @@ const ModelsList: React.FC = observer(() => {
         />
       ) : (
         <Container size="xxl" mx="auto">
-          <Stack h="100vh">
+          <Stack justify="center">
             <Title mx="auto" order={2}>
               {makeStore.singleMake?.name} Models
             </Title>
