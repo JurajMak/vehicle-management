@@ -5,7 +5,6 @@ import { createForm } from './Form';
 import placeholderImg from '../../assets/images/placeholder.png';
 import FileButton from '../../components/FileButton';
 import { FixMeLater } from '../../types';
-import { successCreation } from '../../components/Notifications';
 import CustomInput from '../../components/CustomInput';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
@@ -34,13 +33,12 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
     form.submit();
     if (!form.hasError) {
       setFile(null);
-      successCreation('brand');
     }
   };
 
   return (
     <Container size="xs" my={20}>
-      <Title ta="center" c="primary">
+      <Title ta="center" c="primary" order={2}>
         Add New Vehicle Brand
       </Title>
 
@@ -74,10 +72,11 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
               <Text fw={500} size="sm" py={5}>
                 Add image
               </Text>
-              {form.errors().image && <Text>{form.$('image').error}</Text>}
+              {form.errors().image && <Text c="red.8">{form.$('image').error}</Text>}
               <Paper withBorder mah="20rem" maw="50rem" pos="relative">
-                <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                <Image src={imgPreview} alt="image" h={300} w="100%" fit="contain" />
+                {file && <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />}
+
+                <Image src={imgPreview} alt="image" w="100%" mah={300} fit="contain" />
               </Paper>
             </Grid.Col>
             <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>

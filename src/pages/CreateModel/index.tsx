@@ -1,4 +1,4 @@
-import { TextInput, Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
+import { Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { createForm } from './Form';
@@ -6,9 +6,7 @@ import placeholderImg from '../../assets/images/placeholder.png';
 import FileButton from '../../components/FileButton';
 import { useParams } from 'react-router-dom';
 import { FixMeLater } from '../../types';
-import FormError from '../../components/FormError';
 import { makeStore } from '../../stores/MakeStore';
-import { successCreation } from '../../components/Notifications';
 import CustomInput from '../../components/CustomInput';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
@@ -38,7 +36,6 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
 
     if (!form.hasError) {
       setFile(null);
-      successCreation('model');
     }
   };
 
@@ -49,7 +46,7 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
   return (
     <>
       <Container size="xs" my={20}>
-        <Title ta="center" c="primary">
+        <Title ta="center" c="primary" order={2}>
           Add New {makeStore.singleMake?.name} Model
         </Title>
 
@@ -103,10 +100,14 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
                 <Text fw={500} size="sm" py={5}>
                   Add image
                 </Text>
-                {form.errors().image && <FormError error={form.$('image').error} />}
+
+                {form.errors().image && <Text c="red.8">{form.$('image').error}</Text>}
                 <Paper withBorder mah="20rem" maw="50rem" pos="relative">
-                  <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                  <Image src={imgPreview} alt="image" />
+                  {file && (
+                    <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
+                  )}
+
+                  <Image src={imgPreview} alt="image" w="100%" mah={300} fit="contain" />
                 </Paper>
               </Grid.Col>
               <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>

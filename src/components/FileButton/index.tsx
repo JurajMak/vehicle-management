@@ -18,11 +18,17 @@ const FileButton: React.FC<OwnProps> = ({ variant, text, onChange }) => {
   };
   return (
     <>
-      <Button variant={variant} className="text-black" onClick={handleBtnClick}>
+      <Button variant={variant} onClick={handleBtnClick}>
         {text}
       </Button>
 
-      <Input type="file" ref={inputRef} style={{ display: 'none' }} onChange={onChange}></Input>
+      <Input
+        type="file"
+        ref={inputRef}
+        style={{ display: 'none' }}
+        onChange={onChange}
+        accept="image/png,image/jpeg"
+      ></Input>
     </>
   );
 };

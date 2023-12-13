@@ -28,7 +28,7 @@ const ConfirmModal: React.FC<OwnProps> = ({ opened, close, deleteVehicle, render
           <Button variant="outline" onClick={close}>
             Cancel
           </Button>
-          <Button variant="filled" color="red" onClick={deleteVehicle}>
+          <Button variant="filled" color="red.8" onClick={deleteVehicle}>
             Delete
           </Button>
         </Group>

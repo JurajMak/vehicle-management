@@ -1,25 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import {
-  Box,
-  Button,
-  CloseButton,
-  Container,
-  Grid,
-  Image,
-  LoadingOverlay,
-  Paper,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Box, Button, CloseButton, Container, Grid, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
 import { makeStore } from '../../stores/MakeStore';
 import { modelStore } from '../../stores/ModelStore';
 import { FixMeLater } from '../../types';
 import { successEdit } from '../../components/Notifications';
-import FormError from '../../components/FormError';
+import CustomInput from '../../components/CustomInput';
 
 const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -84,37 +73,58 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
             <form onSubmit={handleSubmit}>
               <Grid gutter="xl">
                 <Grid.Col>
-                  <TextInput {...form.$('name').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('name').error} />}
+                  <CustomInput
+                    field={{ ...form.$('name').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('name').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
-                  <TextInput {...form.$('abrv').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('abrv').error} />}
+                  <CustomInput
+                    field={{ ...form.$('abrv').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('abrv').error}
+                  />
                 </Grid.Col>
                 <Grid.Col>
-                  <TextInput {...form.$('year').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('year').error} />}
-                </Grid.Col>
-
-                <Grid.Col>
-                  <TextInput {...form.$('engine').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('engine').error} />}
-                </Grid.Col>
-                <Grid.Col>
-                  <TextInput {...form.$('body_type').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('body_type').error} />}
+                  <CustomInput
+                    field={{ ...form.$('year').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('year').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
-                  <TextInput {...form.$('transmission').bind()} />
-                  {form.errors().abrv && <FormError error={form.$('transmission').error} />}
+                  <CustomInput
+                    field={{ ...form.$('engine').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('engine').error}
+                  />
+                </Grid.Col>
+                <Grid.Col>
+                  <CustomInput
+                    field={{ ...form.$('body_type').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('body_type').error}
+                  />
+                </Grid.Col>
+
+                <Grid.Col>
+                  <CustomInput
+                    field={{ ...form.$('transmission').bind() }}
+                    formError={form.errors().name}
+                    errorText={form.$('transmission').error}
+                  />
                 </Grid.Col>
 
                 <Grid.Col>
                   <Paper withBorder mah="20rem" maw="50rem" pos="relative">
-                    <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                    <Image src={convert ?? modelStore.singleModel?.image} alt="image" />
+                    {file && (
+                      <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
+                    )}
+
+                    <Image src={convert ?? modelStore.singleModel?.image} alt="image" mah={300} fit="contain" />
                   </Paper>
                 </Grid.Col>
                 <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>

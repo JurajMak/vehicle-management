@@ -10,7 +10,7 @@ const Providers = () => {
   return (
     <>
       <MantineProvider theme={theme}>
-        <Notifications />
+        <Notifications position="top-right" />
         <RouterProvider router={router} />
       </MantineProvider>
     </>

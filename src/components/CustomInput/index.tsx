@@ -11,7 +11,7 @@ const CustomInput: React.FC<OwnProps> = ({ field, formError, errorText }) => {
     <>
       <TextInput {...field} />
       {formError && (
-        <Text mt={5} c="red">
+        <Text mt={5} c="red.8">
           {errorText}
         </Text>
       )}

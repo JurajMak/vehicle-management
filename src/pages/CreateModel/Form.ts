@@ -4,6 +4,7 @@ import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { FixMeLater } from '../../types';
 import { modelStore } from '../../stores/ModelStore';
+import { errorNotification, successCreation } from '../../components/Notifications';
 
 class CreateForm extends MobxReactForm {
   plugins() {
@@ -87,12 +88,12 @@ class CreateForm extends MobxReactForm {
         };
 
         await Vehicle.Model.create(data);
-
-        form.reset();
+        successCreation(name);
+        form.clear();
         modelStore.cache.clear();
       },
       onError(form: FixMeLater) {
-        console.log(form.errors());
+        errorNotification();
       },
     };
   }

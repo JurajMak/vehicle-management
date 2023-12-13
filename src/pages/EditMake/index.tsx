@@ -38,8 +38,6 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
     }
   };
 
-  console.log(convert, 'conver');
-
   const handleState = () => {
     makeStore.getSingleMake(id);
     if (makeStore.singleMake) {
@@ -98,8 +96,11 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
 
                 <Grid.Col>
                   <Paper withBorder mah="20rem" maw="50rem" pos="relative">
-                    <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
-                    <Image src={convert ?? makeStore.singleMake?.image} alt="image" />
+                    {file && (
+                      <CloseButton pos="absolute" variant="transparent" right={0} onClick={() => removePreview()} />
+                    )}
+
+                    <Image src={convert ?? makeStore.singleMake?.image} alt="image" mah={300} fit="contain" />
                   </Paper>
                 </Grid.Col>
                 <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>

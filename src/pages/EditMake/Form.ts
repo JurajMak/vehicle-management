@@ -4,6 +4,7 @@ import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { makeStore } from '../../stores/MakeStore';
 import { FixMeLater } from '../../types';
+import { errorNotification, successEdit } from '../../components/Notifications';
 
 class EditForm extends MobxReactForm {
   plugins() {
@@ -58,6 +59,8 @@ class EditForm extends MobxReactForm {
             id: makeStore.singleMakeId,
           };
           await Vehicle.Make.edit(data);
+          makeStore.cache.clear();
+          successEdit(`${name}`);
         } else {
           const url = await Vehicle.Make.uploadFile({
             file: image,
@@ -71,11 +74,12 @@ class EditForm extends MobxReactForm {
             id: makeStore.singleMakeId,
           };
           await Vehicle.Make.edit(data);
+          successEdit(`${name}`);
+          makeStore.cache.clear();
         }
-        makeStore.cache.clear();
       },
-      onError(form: FixMeLater) {
-        console.log(form.errors());
+      onError() {
+        errorNotification();
       },
     };
   }

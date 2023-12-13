@@ -20,6 +20,7 @@ export class Make {
     if (sort && sortActions.hasOwnProperty(sort)) {
       query = sortActions[sort]();
     }
+
     if (searchQuery) {
       query = query.or(`name.ilike.%${searchQuery}%,abrv.ilike.%${searchQuery}%,country.ilike.%${searchQuery}%`);
     }
@@ -35,6 +36,7 @@ export class Make {
     }
 
     const PAGE_COUNT = count !== null ? Math.ceil(count / PAGE_SIZE) : 0;
+
     return {
       data: data ?? [],
       pageCount: PAGE_COUNT,

@@ -4,6 +4,8 @@ import validatorjs from 'validatorjs';
 import { Vehicle } from '../../services/Vehicle';
 import { FixMeLater } from '../../types';
 import { makeStore } from '../../stores/MakeStore';
+import { errorNotification } from '../../components/Notifications';
+import { successCreation } from '../../components/Notifications';
 class CreateForm extends MobxReactForm {
   plugins() {
     return {
@@ -61,11 +63,12 @@ class CreateForm extends MobxReactForm {
         };
 
         await Vehicle.Make.create(data);
-        form.reset();
+        successCreation(`${name}`);
+        form.clear();
         makeStore.cache.clear();
       },
-      onError(form: FixMeLater) {
-        console.log(form.errors());
+      onError() {
+        errorNotification();
       },
     };
   }

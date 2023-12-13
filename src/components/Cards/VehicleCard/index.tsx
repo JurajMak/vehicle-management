@@ -1,6 +1,7 @@
 import { Card, Divider, Group, Image, Text } from '@mantine/core';
 import { ReactNode } from 'react';
 import { IMake, IModel } from '../../../types';
+
 type VehicleType = IMake | (IModel & { country?: string });
 interface OwnProps {
   item: VehicleType;
@@ -10,9 +11,9 @@ interface OwnProps {
 
 const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) => {
   return (
-    <Card withBorder radius="md">
+    <Card withBorder radius="md" shadow="xl">
       <Card.Section>
-        <Image src={item.image ?? 'https://i.imgur.com/ZL52Q2D.png'} alt="image" h={200} w="100%" fit="scale-down" />
+        <Image src={item.image ?? 'https://i.imgur.com/ZL52Q2D.png'} alt="image" h={200} w="100%" fit="contain" />
 
         <Divider />
       </Card.Section>

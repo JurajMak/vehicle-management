@@ -3,8 +3,8 @@ import { modelStore } from '../../stores/ModelStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import VehicleCard from '../../components/Cards/VehicleCard';
-import { ActionIcon, Button, Container, Grid, Group, LoadingOverlay, Pagination, Text } from '@mantine/core';
-import { Edit, LucideIcon, X } from 'lucide-react';
+import { Button, Container, Grid, Group, LoadingOverlay, Pagination, Stack, Text, Title } from '@mantine/core';
+import { LucideIcon } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import SearchBar from '../../components/SearchBar';
 import { User, Cog, Fuel, CalendarDays } from 'lucide-react';
@@ -12,6 +12,7 @@ import { IModel } from '../../types';
 import { SELECT_MODEL_DATA } from '../../utils/Constants';
 import { sortHandler } from '../../utils/FilteringHandlers';
 import CustomSelect from '../../components/Select';
+import { makeStore } from '../../stores/MakeStore';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -21,15 +22,10 @@ const ModelsList: React.FC = observer(() => {
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteId, setDeleteId] = React.useState<string>('');
 
-  React.useEffect(() => {
-    if (id) {
-      modelStore.getModels(id);
-    }
-  }, []);
-
   const handleNavigateEdit = (item: IModel) => {
     navigate(`/model/${item.id}`, { state: item });
   };
+
   const getDeleteId = (id: string) => {
     open();
     setDeleteId(id);
@@ -53,7 +49,7 @@ const ModelsList: React.FC = observer(() => {
     return (
       <Group gap={30} justify="space-between">
         <Button onClick={() => handleNavigateEdit({ ...item })}>Edit Model</Button>
-        <Button color="red" onClick={() => getDeleteId(item.id)}>
+        <Button variant="outline" color="red.8" onClick={() => getDeleteId(item.id)}>
           Delete Model
         </Button>
       </Group>
@@ -86,7 +82,7 @@ const ModelsList: React.FC = observer(() => {
     return (
       <Text size="md">
         This action cannot be undone. This will permanently delete selected
-        <Text fw={500} span c="red" ml={5} inherit>
+        <Text fw={500} span c="red.8" ml={5} inherit>
           Model !
         </Text>
       </Text>
@@ -96,6 +92,13 @@ const ModelsList: React.FC = observer(() => {
   const selectData = React.useMemo(() => {
     return SELECT_MODEL_DATA.map(item => item);
   }, [SELECT_MODEL_DATA]);
+
+  React.useEffect(() => {
+    if (id) {
+      modelStore.getModels(id);
+      makeStore.getSingleMake(id);
+    }
+  }, []);
 
   return (
     <>
@@ -107,45 +110,50 @@ const ModelsList: React.FC = observer(() => {
           loaderProps={{ type: 'dots', size: 150 }}
         />
       ) : (
-        <Container size="xl" mx="auto">
-          <Group justify="center" my="lg">
-            <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
-            <CustomSelect
-              data={selectData}
-              initialValue={modelStore.sort}
-              onChange={value => sortHandler({ query: value, store: modelStore })}
-            />
-          </Group>
-          <Grid gutter="xl" align="center">
-            {modelStore.models.map(item => {
-              return (
-                <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
-                  <VehicleCard
-                    item={item}
-                    renderBtns={handleRenderBtns(item)}
-                    renderModelSpec={handleModelSpec(item)}
-                  />
-                </Grid.Col>
-              );
-            })}
-          </Grid>
-          <Pagination
-            mt="xl"
-            total={modelStore.pageCount}
-            value={modelStore.pageIndex}
-            onChange={value => modelStore.setPageIndex(value)}
-          />
-
-          {opened && (
-            <Suspense fallback={opened}>
-              <ConfirmModal
-                renderWarning={renderWarning}
-                opened={opened}
-                close={close}
-                deleteVehicle={() => handleDelete(deleteId)}
+        <Container size="xxl" mx="auto">
+          <Stack h="100vh">
+            <Title mx="auto" order={2}>
+              {makeStore.singleMake?.name} Models
+            </Title>
+            <Group justify="center" my="xl">
+              <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
+              <CustomSelect
+                data={selectData}
+                initialValue={modelStore.sort}
+                onChange={value => sortHandler({ query: value, store: modelStore })}
               />
-            </Suspense>
-          )}
+            </Group>
+            <Grid gutter="xl" align="center">
+              {modelStore.models.map(item => {
+                return (
+                  <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
+                    <VehicleCard
+                      item={item}
+                      renderBtns={handleRenderBtns(item)}
+                      renderModelSpec={handleModelSpec(item)}
+                    />
+                  </Grid.Col>
+                );
+              })}
+            </Grid>
+            <Pagination
+              mt="xl"
+              total={modelStore.pageCount}
+              value={modelStore.pageIndex}
+              onChange={value => modelStore.setPageIndex(value)}
+            />
+
+            {opened && (
+              <Suspense fallback={opened}>
+                <ConfirmModal
+                  renderWarning={renderWarning}
+                  opened={opened}
+                  close={close}
+                  deleteVehicle={() => handleDelete(deleteId)}
+                />
+              </Suspense>
+            )}
+          </Stack>
         </Container>
       )}
     </>
