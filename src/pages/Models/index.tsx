@@ -13,6 +13,7 @@ import { SELECT_MODEL_DATA } from '../../utils/Constants';
 import { sortHandler } from '../../utils/FilteringHandlers';
 import CustomSelect from '../../components/Select';
 import { makeStore } from '../../stores/MakeStore';
+import { successDeletion } from '../../components/Notifications';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -33,6 +34,7 @@ const ModelsList: React.FC = observer(() => {
 
   const handleDelete = (id: string) => {
     modelStore.deleteModel(id);
+    successDeletion('model');
     close();
   };
 

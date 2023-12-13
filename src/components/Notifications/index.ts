@@ -17,6 +17,14 @@ export const successEdit = (item: string) => {
     autoClose: 4000,
   });
 };
+export const successDeletion = (item: string) => {
+  notifications.show({
+    color: 'green',
+    title: 'Success',
+    message: `Successfully deleted vehicle ${item}`,
+    autoClose: 4000,
+  });
+};
 
 export const errorNotification = () => {
   notifications.show({

@@ -23,6 +23,7 @@ import { IMake } from '../../types';
 import CustomSelect from '../../components/Select';
 import { SELECT_MAKE_DATA } from '../../utils/Constants';
 import { sortHandler } from '../../utils/FilteringHandlers';
+import { successDeletion } from '../../components/Notifications';
 
 const ConfirmModal = lazy(() => import('../../components/Modals/ConfirmModal'));
 
@@ -41,6 +42,7 @@ const Home: React.FC = observer(() => {
   };
   const handleDelete = (id: string) => {
     makeStore.deleteMake(id);
+    successDeletion('brand');
     close();
   };
 

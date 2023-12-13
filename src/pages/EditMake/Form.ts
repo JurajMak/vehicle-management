@@ -24,7 +24,7 @@ class EditForm extends MobxReactForm {
         },
         {
           name: 'abrv',
-          label: 'Insert abbreviation ',
+          label: 'Add abbreviation ',
           placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',

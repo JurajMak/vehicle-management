@@ -20,23 +20,26 @@ const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) 
 
       <Group justify="space-between" mt="md">
         <div>
-          <Text fw={500} size="lg" mb="xs">
+          <Text fw={500} size="lg" mb={2}>
             {item.name}
           </Text>
-          <Text fw={500} size="sm" c="dimmed">
+          <Text fw={500} size="sm" c="dimmed" mb={2}>
             {item.abrv}
           </Text>
           {item.country && (
             <Text fz="sm" c="dimmed">
-              {`Made in ${item.country}`}
+              <Text fw={500} span c="dimmed" inherit>
+                Origin:
+              </Text>
+              {item.country}
             </Text>
           )}
         </div>
       </Group>
 
-      <Card.Section mt="md" p="md">
+      <Card.Section mt="xs" p="md">
         {renderModelSpec && (
-          <Text fz="sm" fw={500} c="dimmed" mb="xs" tt="uppercase" style={{ lineHeight: 1 }}>
+          <Text fz="sm" fw={500} c="dimmed" mb="sm" tt="uppercase" style={{ lineHeight: 1 }}>
             Basic configuration
           </Text>
         )}
