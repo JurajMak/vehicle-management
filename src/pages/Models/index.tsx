@@ -117,7 +117,7 @@ const ModelsList: React.FC = observer(() => {
             <Title mx="auto" order={2}>
               {makeStore.singleMake?.name} Models
             </Title>
-            <Group justify="center" my="xl">
+            <Group justify="center" mb="xl">
               <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
               <CustomSelect
                 data={selectData}

@@ -11,13 +11,13 @@ interface OwnProps {
 
 const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) => {
   return (
-    <Card withBorder radius="md">
+    <Card withBorder radius="md" shadow="xl">
       <Card.Section>
         <Image
           src={item.image}
           fallbackSrc="https://i.imgur.com/ZL52Q2D.png"
           alt="image"
-          h={200}
+          h={150}
           w="100%"
           fit="contain"
         />
@@ -34,7 +34,7 @@ const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) 
             {item.abrv}
           </Text>
           {item.country && (
-            <Group gap={4}>
+            <Group gap={4} mt={5}>
               <Text size="sm" fw={500}>
                 Origin:
               </Text>
@@ -45,18 +45,15 @@ const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) 
           )}
         </div>
       </Group>
-
-      <Card.Section mt="xs" p="md">
-        {renderModelSpec && (
+      {renderModelSpec && (
+        <Card.Section mt="xs" p="md">
           <Text fz="sm" fw={500} c="gray.7" mb="sm" tt="uppercase" style={{ lineHeight: 1 }}>
             Basic configuration
           </Text>
-        )}
 
-        <Group gap={8} mb={-8}>
-          {renderModelSpec}
-        </Group>
-      </Card.Section>
+          <Group gap={4}>{renderModelSpec}</Group>
+        </Card.Section>
+      )}
 
       <Card.Section p="md">{renderBtns}</Card.Section>
     </Card>

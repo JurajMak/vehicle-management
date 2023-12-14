@@ -1,7 +1,7 @@
 import { supabase } from '../../Supabase';
 import { IGetResponse, IGetParams, IUploadFile, FixMeLater, IMake } from '../../../types';
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 8;
 export class Make {
   static makeEndpoint = 'vehicle_make';
 
@@ -29,7 +29,7 @@ export class Make {
       query = query.range(offset, offset + PAGE_SIZE - 1);
     }
 
-    const { data, error, count } = await query.limit(4);
+    const { data, error, count } = await query.limit(8);
 
     if (error) {
       throw new Error(error.message);

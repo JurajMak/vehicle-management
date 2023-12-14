@@ -1,7 +1,7 @@
 import { supabase } from '../../Supabase';
 import { IGetResponse, IGetParams, IUploadFile, FixMeLater, IModel } from '../../../types';
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 8;
 export class Model {
   static modelEndpoint = 'vehicle_model';
 
@@ -31,7 +31,7 @@ export class Model {
       query = query.range(offset, offset + PAGE_SIZE - 1);
     }
 
-    const { data, error, count } = await query.limit(4);
+    const { data, error, count } = await query.limit(8);
     if (error) {
       throw new Error(error.message);
     }

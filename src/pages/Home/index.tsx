@@ -108,7 +108,7 @@ const Home: React.FC = observer(() => {
             <Title mx="auto" order={2}>
               Vehicle Brands
             </Title>
-            <Group justify="center" my="lg">
+            <Group justify="center" mb="lg">
               <SearchBar onChange={searchHandler} initialValue={makeStore.searchQuery} />
               <CustomSelect
                 data={selectData}

@@ -42,9 +42,9 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
         Add New Vehicle Brand
       </Title>
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+      <Paper withBorder shadow="md" p="lg" mt={30} radius="md">
         <form onSubmit={handleSubmit}>
-          <Grid gutter="xl">
+          <Grid gutter="lg">
             <Grid.Col>
               <CustomInput
                 field={{ ...form.$('name').bind() }}
@@ -80,7 +80,7 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
               </Paper>
             </Grid.Col>
             <Grid.Col>
-              <Group justify="right">
+              <Group justify="right" mr={5}>
                 <FileButton variant="outline" text="Upload Image" onChange={e => handlePreview(e)} />
               </Group>
             </Grid.Col>

@@ -72,7 +72,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
             Edit {makeStore.singleMake?.name} {modelStore.singleModel?.name}
           </Title>
 
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <Paper withBorder shadow="md" p="lg" mt={30} radius="md">
             <form onSubmit={handleSubmit}>
               <Grid gutter="xl">
                 <Grid.Col>
@@ -131,7 +131,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
                   </Paper>
                 </Grid.Col>
                 <Grid.Col>
-                  <Group justify="right">
+                  <Group justify="right" mr={5}>
                     <FileButton variant="outline" text="Upload Image" onChange={e => handlePreview(e)} />
                   </Group>
                 </Grid.Col>
