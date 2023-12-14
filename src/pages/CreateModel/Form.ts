@@ -92,7 +92,7 @@ class CreateForm extends MobxReactForm {
         form.clear();
         modelStore.cache.clear();
       },
-      onError(form: FixMeLater) {
+      onError() {
         errorNotification();
       },
     };

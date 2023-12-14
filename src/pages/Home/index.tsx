@@ -57,7 +57,7 @@ const Home: React.FC = observer(() => {
 
   const handleRenderBtns: (item: IMake) => JSX.Element = item => {
     return (
-      <Group gap={30} justify="space-between">
+      <Group justify="space-between">
         <Button onClick={() => navigate(`models/${item.id}`)}>View Models</Button>
         <Group>
           <Tooltip label="Edit Brand" withArrow arrowSize={10}>
@@ -103,7 +103,7 @@ const Home: React.FC = observer(() => {
           loaderProps={{ type: 'dots', size: 150 }}
         />
       ) : (
-        <Container size="xxl" mx="auto">
+        <Container size="xl">
           <Stack justify="center">
             <Title mx="auto" order={2}>
               Vehicle Brands
@@ -119,7 +119,7 @@ const Home: React.FC = observer(() => {
             <Grid gutter="xl">
               {makeStore.make.map(item => {
                 return (
-                  <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
+                  <Grid.Col span={{ xs: 6, sm: 6, md: 4, lg: 3 }} key={item.id}>
                     <VehicleCard item={item} renderBtns={handleRenderBtns(item)} />
                   </Grid.Col>
                 );

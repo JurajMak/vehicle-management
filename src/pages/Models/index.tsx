@@ -49,7 +49,7 @@ const ModelsList: React.FC = observer(() => {
 
   const handleRenderBtns: (item: IModel) => JSX.Element = item => {
     return (
-      <Group gap={30} justify="space-between">
+      <Group justify="space-between">
         <Button onClick={() => handleNavigateEdit({ ...item })}>Edit Model</Button>
         <Button variant="outline" color="red.8" onClick={() => getDeleteId(item.id)}>
           Delete Model
@@ -112,7 +112,7 @@ const ModelsList: React.FC = observer(() => {
           loaderProps={{ type: 'dots', size: 150 }}
         />
       ) : (
-        <Container size="xxl" mx="auto">
+        <Container size="xl" mx="auto">
           <Stack justify="center">
             <Title mx="auto" order={2}>
               {makeStore.singleMake?.name} Models
@@ -140,6 +140,7 @@ const ModelsList: React.FC = observer(() => {
             </Grid>
             <Pagination
               mt="xl"
+              mx="auto"
               total={modelStore.pageCount}
               value={modelStore.pageIndex}
               onChange={value => modelStore.setPageIndex(value)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Box, Button, CloseButton, Container, Grid, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
+import { Box, Button, CloseButton, Container, Grid, Group, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
 import { makeStore } from '../../stores/MakeStore';
@@ -14,7 +14,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
 
   const convert = file && URL.createObjectURL(file);
 
-  const { id }: FixMeLater = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const handlePreview: React.ChangeEventHandler<HTMLInputElement> = e => {
     if (!e.target.files) {
@@ -39,7 +39,10 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   };
 
   const handleState = () => {
-    makeStore.getSingleMake(id);
+    if (id) {
+      makeStore.getSingleMake(id);
+    }
+
     if (makeStore.singleMake) {
       form.$('name').set(`${makeStore.singleMake.name}`);
       form.$('abrv').set(`${makeStore.singleMake.abrv}`);
@@ -103,10 +106,10 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
                     <Image src={convert ?? makeStore.singleMake?.image} alt="image" mah={300} fit="contain" />
                   </Paper>
                 </Grid.Col>
-                <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>
-                  <Box>
-                    <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
-                  </Box>
+                <Grid.Col>
+                  <Group justify="right">
+                    <FileButton variant="outline" text="Upload Image" onChange={e => handlePreview(e)} />
+                  </Group>
                 </Grid.Col>
 
                 <Grid.Col>

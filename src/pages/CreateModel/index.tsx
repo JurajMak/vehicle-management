@@ -1,4 +1,4 @@
-import { Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text } from '@mantine/core';
+import { Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text, Group } from '@mantine/core';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { createForm } from './Form';
@@ -11,7 +11,7 @@ import CustomInput from '../../components/CustomInput';
 
 export const Create: React.FC<FixMeLater> = observer(({ form }) => {
   const [file, setFile] = React.useState<File | null>(null);
-  const { id }: FixMeLater = useParams();
+  const { id } = useParams<{ id: string }>();
   const convert = file && URL.createObjectURL(file);
 
   const imgPreview = convert ?? placeholderImg;
@@ -40,7 +40,9 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
   };
 
   React.useEffect(() => {
-    makeStore.getSingleMake(id);
+    if (id) {
+      makeStore.getSingleMake(id);
+    }
   }, [makeStore.singleMake?.id]);
 
   return (
@@ -110,10 +112,10 @@ export const Create: React.FC<FixMeLater> = observer(({ form }) => {
                   <Image src={imgPreview} alt="image" w="100%" mah={300} fit="contain" />
                 </Paper>
               </Grid.Col>
-              <Grid.Col offset={{ base: 0, xs: 8, sm: 8 }}>
-                <Box>
-                  <FileButton variant="outline" text="Upload Image" onChange={(e: FixMeLater) => handlePreview(e)} />
-                </Box>
+              <Grid.Col>
+                <Group justify="right">
+                  <FileButton variant="outline" text="Upload Image" onChange={e => handlePreview(e)} />
+                </Group>
               </Grid.Col>
               <Grid.Col>
                 <Button variant="filled" type="submit" mt="xl">

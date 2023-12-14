@@ -11,9 +11,16 @@ interface OwnProps {
 
 const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) => {
   return (
-    <Card withBorder radius="md" shadow="xl">
+    <Card withBorder radius="md">
       <Card.Section>
-        <Image src={item.image ?? 'https://i.imgur.com/ZL52Q2D.png'} alt="image" h={200} w="100%" fit="contain" />
+        <Image
+          src={item.image}
+          fallbackSrc="https://i.imgur.com/ZL52Q2D.png"
+          alt="image"
+          h={200}
+          w="100%"
+          fit="contain"
+        />
 
         <Divider />
       </Card.Section>
@@ -23,23 +30,25 @@ const VehicleCard: React.FC<OwnProps> = ({ item, renderBtns, renderModelSpec }) 
           <Text fw={500} size="lg" mb={2}>
             {item.name}
           </Text>
-          <Text fw={500} size="sm" c="dimmed" mb={2}>
+          <Text fw={500} size="sm" mb={2}>
             {item.abrv}
           </Text>
           {item.country && (
-            <Text fz="sm" c="dimmed">
-              <Text fw={500} span c="dimmed" inherit>
+            <Group gap={4}>
+              <Text size="sm" fw={500}>
                 Origin:
               </Text>
-              {item.country}
-            </Text>
+              <Text size="md" fw={500}>
+                {item.country}
+              </Text>
+            </Group>
           )}
         </div>
       </Group>
 
       <Card.Section mt="xs" p="md">
         {renderModelSpec && (
-          <Text fz="sm" fw={500} c="dimmed" mb="sm" tt="uppercase" style={{ lineHeight: 1 }}>
+          <Text fz="sm" fw={500} c="gray.7" mb="sm" tt="uppercase" style={{ lineHeight: 1 }}>
             Basic configuration
           </Text>
         )}
