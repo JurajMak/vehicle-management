@@ -1,10 +1,10 @@
 import { notifications } from '@mantine/notifications';
 
-export const successCreation = (item: string) => {
+export const successCreation = (name: string, type: string) => {
   notifications.show({
     color: 'green',
     title: 'Success',
-    message: `Successful creation of ${item} brand`,
+    message: `Successful creation of ${name} ${type}`,
     autoClose: 4000,
   });
 };

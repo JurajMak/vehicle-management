@@ -63,7 +63,7 @@ class CreateForm extends MobxReactForm {
         };
 
         await Vehicle.Make.create(data);
-        successCreation(`${name}`);
+        successCreation(name, 'brand');
         form.clear();
         makeStore.cache.clear();
       },

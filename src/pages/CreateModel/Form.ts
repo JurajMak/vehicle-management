@@ -88,7 +88,7 @@ class CreateForm extends MobxReactForm {
         };
 
         await Vehicle.Model.create(data);
-        successCreation(name);
+        successCreation(name, 'model');
         form.clear();
         modelStore.cache.clear();
       },
