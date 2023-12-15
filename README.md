@@ -24,7 +24,3 @@ To start using the app, follow these steps:
 ```bash
 `yarn start`.
 ```
-
-## Live Preview
-
-- [https://vehicle-management-five.vercel.app](https://vehicle-management-five.vercel.app)

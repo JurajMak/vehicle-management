@@ -39,7 +39,7 @@ const ModelsList: React.FC = observer(() => {
   };
 
   const searchHandler = (query: string) => {
-    if (query.length > 0) {
+    if (query.length) {
       modelStore.setPageIndex(1);
       modelStore.setSearchQuery(query ?? '');
     } else {
@@ -47,7 +47,7 @@ const ModelsList: React.FC = observer(() => {
     }
   };
 
-  const handleRenderBtns: (item: IModel) => JSX.Element = item => {
+  const renderBtns: (item: IModel) => JSX.Element = item => {
     return (
       <Group justify="space-between">
         <Button onClick={() => handleNavigateEdit({ ...item })}>Edit Model</Button>
@@ -58,7 +58,7 @@ const ModelsList: React.FC = observer(() => {
     );
   };
 
-  const handleModelSpec: (item: IModel) => JSX.Element[] = item => {
+  const renderModelSpec: (item: IModel) => JSX.Element[] = item => {
     interface OwnProps {
       label: string | number;
       icon: LucideIcon;
@@ -70,7 +70,7 @@ const ModelsList: React.FC = observer(() => {
       { label: item.engine, icon: Fuel },
     ];
 
-    return data.map((feature: OwnProps, index: number) => (
+    return data.map((feature, index: number) => (
       <Group key={index} gap={4}>
         <feature.icon size="1.05rem" />
         <Text size="xs" tt="capitalize">
@@ -91,14 +91,13 @@ const ModelsList: React.FC = observer(() => {
     );
   };
 
-  const selectData = React.useMemo(() => {
-    return SELECT_MODEL_DATA.map(item => item);
-  }, [SELECT_MODEL_DATA]);
-
   React.useEffect(() => {
     if (id) {
-      modelStore.getModels(id);
-      makeStore.getSingleMake(id);
+      modelStore.setPageIndex(1);
+      if (modelStore.pageIndex === 1) {
+        modelStore.getModels(id);
+        makeStore.getSingleMake(id);
+      }
     }
   }, []);
 
@@ -120,7 +119,7 @@ const ModelsList: React.FC = observer(() => {
             <Group justify="center" mb="xl">
               <SearchBar onChange={searchHandler} initialValue={modelStore.searchQuery} />
               <CustomSelect
-                data={selectData}
+                data={SELECT_MODEL_DATA}
                 initialValue={modelStore.sort}
                 onChange={value => sortHandler({ query: value, store: modelStore })}
               />
@@ -129,11 +128,7 @@ const ModelsList: React.FC = observer(() => {
               {modelStore.models.map(item => {
                 return (
                   <Grid.Col span={{ base: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
-                    <VehicleCard
-                      item={item}
-                      renderBtns={handleRenderBtns(item)}
-                      renderModelSpec={handleModelSpec(item)}
-                    />
+                    <VehicleCard item={item} renderBtns={renderBtns(item)} renderModelSpec={renderModelSpec(item)} />
                   </Grid.Col>
                 );
               })}

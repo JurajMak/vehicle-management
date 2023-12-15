@@ -47,7 +47,7 @@ const Home: React.FC = observer(() => {
   };
 
   const searchHandler = (query: string) => {
-    if (query.length > 0) {
+    if (query.length) {
       makeStore.setPageIndex(1);
       makeStore.setSearchQuery(query ?? '');
     } else {
@@ -55,7 +55,7 @@ const Home: React.FC = observer(() => {
     }
   };
 
-  const handleRenderBtns: (item: IMake) => JSX.Element = item => {
+  const renderBtns: (item: IMake) => JSX.Element = item => {
     return (
       <Group justify="space-between">
         <Button onClick={() => navigate(`models/${item.id}`)}>View Models</Button>
@@ -79,15 +79,11 @@ const Home: React.FC = observer(() => {
       <Text size="md">
         This action cannot be undone. This will permanently delete selected
         <Text fw={500} span c="red.8" mx={5} inherit>
-          Vehicle and all associated Models !
+          Brand and all associated Models !
         </Text>
       </Text>
     );
   };
-
-  const selectData = React.useMemo(() => {
-    return SELECT_MAKE_DATA.map(item => item);
-  }, [SELECT_MAKE_DATA]);
 
   React.useEffect(() => {
     makeStore.getMake();
@@ -111,7 +107,7 @@ const Home: React.FC = observer(() => {
             <Group justify="center" mb="lg">
               <SearchBar onChange={searchHandler} initialValue={makeStore.searchQuery} />
               <CustomSelect
-                data={selectData}
+                data={SELECT_MAKE_DATA}
                 initialValue={makeStore.sort}
                 onChange={value => sortHandler({ query: value, store: makeStore })}
               />
@@ -120,7 +116,7 @@ const Home: React.FC = observer(() => {
               {makeStore.make.map(item => {
                 return (
                   <Grid.Col span={{ xs: 6, sm: 6, md: 4, lg: 3 }} key={item.id}>
-                    <VehicleCard item={item} renderBtns={handleRenderBtns(item)} />
+                    <VehicleCard item={item} renderBtns={renderBtns(item)} />
                   </Grid.Col>
                 );
               })}

@@ -28,6 +28,7 @@ const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '' }) => {
           onChange(inputValue);
         }
       }}
+      onBlur={() => onChange(inputValue)}
       placeholder="Search..."
       radius="md"
       leftSection={<Search size={20} />}
