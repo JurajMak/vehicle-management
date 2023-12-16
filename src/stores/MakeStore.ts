@@ -108,6 +108,8 @@ export class VehicleMakeStore {
     await Vehicle.Make.delete(id);
     runInAction(() => {
       this.make = this.make.filter(item => item.id !== id);
+      this.cache.clear();
+      this.setPageIndex(1);
     });
   }
 }

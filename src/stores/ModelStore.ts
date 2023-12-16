@@ -111,6 +111,8 @@ export class VehicleModelStore {
     await Vehicle.Model.delete(id);
     runInAction(() => {
       this.models = this.models.filter(item => item.id !== id);
+      this.cache.clear();
+      this.setPageIndex(1);
     });
   }
 }
