@@ -33,9 +33,6 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
-    if (!form.hasError) {
-      successEdit('brand');
-    }
   };
 
   const handleState = () => {

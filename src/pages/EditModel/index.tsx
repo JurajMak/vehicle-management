@@ -7,7 +7,6 @@ import { editForm } from './Form';
 import { makeStore } from '../../stores/MakeStore';
 import { modelStore } from '../../stores/ModelStore';
 import { FixMeLater } from '../../types';
-import { successEdit } from '../../components/Notifications';
 import CustomInput from '../../components/CustomInput';
 
 const Edit: React.FC<FixMeLater> = observer(({ form }) => {
@@ -32,30 +31,26 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     form.submit();
-    successEdit('model');
   };
 
   const handleState = () => {
     if (id) {
       modelStore.getSingleModel(id);
-    }
-
-    if (modelStore.singleModel) {
-      form.$('name').set(`${modelStore.singleModel.name}`);
-      form.$('abrv').set(`${modelStore.singleModel.abrv}`);
-      form.$('year').set(`${modelStore.singleModel.year}`);
-      form.$('engine').set(`${modelStore.singleModel.engine}`);
-      form.$('body_type').set(`${modelStore.singleModel.body_type}`);
-      form.$('transmission').set(`${modelStore.singleModel.transmission}`);
-      form.$('image').set(`${modelStore.singleModel.image}`);
-
-      makeStore.getSingleMake(modelStore.singleModel.make_id);
+      if (modelStore.singleModel) {
+        form.$('name').set(`${modelStore.singleModel.name}`);
+        form.$('abrv').set(`${modelStore.singleModel.abrv}`);
+        form.$('year').set(`${modelStore.singleModel.year}`);
+        form.$('engine').set(`${modelStore.singleModel.engine}`);
+        form.$('body_type').set(`${modelStore.singleModel.body_type}`);
+        form.$('transmission').set(`${modelStore.singleModel.transmission}`);
+        form.$('image').set(`${modelStore.singleModel.image}`);
+      }
     }
   };
 
   React.useEffect(() => {
     handleState();
-  }, [modelStore.singleModel?.make_id]);
+  }, [modelStore.singleModel?.id]);
 
   return (
     <>
