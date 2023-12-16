@@ -1,4 +1,4 @@
-import { Button, Group, Modal, Stack, Text } from '@mantine/core';
+import { Button, Group, Modal, Stack } from '@mantine/core';
 import React from 'react';
 
 interface OwnProps {

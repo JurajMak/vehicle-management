@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { Box, Button, CloseButton, Container, Grid, Group, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
+import { Button, CloseButton, Container, Grid, Group, Image, LoadingOverlay, Paper, Title } from '@mantine/core';
 import FileButton from '../../components/FileButton';
 import { editForm } from './Form';
 import { makeStore } from '../../stores/MakeStore';

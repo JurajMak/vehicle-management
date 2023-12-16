@@ -10,7 +10,7 @@ export class Model {
     const offset = range * PAGE_SIZE;
     let query = supabase.from(this.modelEndpoint).select('*', { count: 'exact' }).eq('make_id', id);
 
-    const sortActions: any = {
+    const sortActions: FixMeLater = {
       'NameA ': () => query.order('name', { ascending: true }),
       'NameD ': () => query.order('name', { ascending: false }),
       'yearA ': () => query.order('year', { ascending: true }),

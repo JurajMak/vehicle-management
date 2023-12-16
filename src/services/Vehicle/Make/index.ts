@@ -10,7 +10,7 @@ export class Make {
     const offset = range * PAGE_SIZE;
     let query = supabase.from(this.makeEndpoint).select('*', { count: 'exact' });
 
-    const sortActions: any = {
+    const sortActions: FixMeLater = {
       'NameA ': () => query.order('name', { ascending: true }),
       'NameD ': () => query.order('name', { ascending: false }),
       'CountryA ': () => query.order('country', { ascending: true }),

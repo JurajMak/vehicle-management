@@ -1,4 +1,4 @@
-import { Paper, Title, Container, Button, Grid, Image, Box, CloseButton, Text, Group } from '@mantine/core';
+import { Paper, Title, Container, Button, Grid, Image, CloseButton, Text, Group } from '@mantine/core';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { createForm } from './Form';
