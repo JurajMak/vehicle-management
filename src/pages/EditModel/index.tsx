@@ -54,7 +54,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
 
   return (
     <>
-      {makeStore.isLoading || modelStore.isLoading ? (
+      {modelStore.isLoading ? (
         <LoadingOverlay
           visible={true}
           zIndex={1000}
@@ -64,7 +64,7 @@ const Edit: React.FC<FixMeLater> = observer(({ form }) => {
       ) : (
         <Container size="xs" my={20}>
           <Title ta="center" c="primary">
-            Edit {makeStore.singleMake?.name} {modelStore.singleModel?.name}
+            Edit model
           </Title>
 
           <Paper withBorder shadow="md" p="lg" mt={30} radius="md">

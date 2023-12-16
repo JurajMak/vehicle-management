@@ -17,21 +17,21 @@ class EditForm extends MobxReactForm {
       fields: [
         {
           name: 'name',
-          label: 'Add vehicle brand',
+          label: 'Brand name',
           placeholder: 'Insert new name',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'abrv',
-          label: 'Add abbreviation ',
+          label: 'Brand abbreviation ',
           placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',
         },
         {
           name: 'country',
-          label: 'Add brand country',
+          label: 'Country of origin',
           placeholder: 'Insert abbreviation ',
           rules: 'required|string|between:1,25',
           value: '',
