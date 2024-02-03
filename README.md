@@ -22,5 +22,5 @@ To start using the app, follow these steps:
 5. Run the app using
 
 ```bash
-`yarn start`
+yarn start
 ```
